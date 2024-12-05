@@ -1,0 +1,218 @@
+[
+  {
+    "amount": 7550,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-08-19",
+    "transactionUserId": "m979vysset9rew3qqymx1prfhn75s48c",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 5550,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-19",
+    "transactionUserId": "m970bskr5e5nt3dep57v42rehd75r893",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 4230,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-18",
+    "transactionUserId": "m9757fhsmwpzezs4w7s6qt7rk575r2e3",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 12000,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-08-17",
+    "transactionUserId": "m97cpsjs2yn2k6rt4kzgpk41v575s5tp",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 6500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-17",
+    "transactionUserId": "m9722gfrvvfwxhjsnqy2n187a175rkaq",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 6575,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-08-15",
+    "transactionUserId": "m97bc0gem45hcbypqd66bmntxx75r3q4",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 5000,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-08-14",
+    "transactionUserId": "m97c26z1j95fk648a8hbkjh10x75rts9",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 3250,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-13",
+    "transactionUserId": "m97bvsw14ak1gr15e3zgz4nr5d75r5wp",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-11",
+    "transactionUserId": "m9705az9cgbz7tb91jjma0cvgn75r1tj",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-11",
+    "transactionUserId": "m978381s6zrqhdyvvq221pfmkd75rkrj",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 2500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-09",
+    "transactionUserId": "m97e9j3ys130rsgk33z6pmmcjh75rjnv",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 45000,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-08-07",
+    "transactionUserId": "m972kg29p7jxbbxa22gd0qa0yx75s93y",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 2150,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-02",
+    "transactionUserId": "m972gmsx70rr52easc8q4q4y4h75sz4p",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 2150,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-04",
+    "transactionUserId": "m979vysset9rew3qqymx1prfhn75s48c",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-19",
+    "transactionUserId": "m97d69nr164z3k3fwxn2cskza975sdrh",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-15",
+    "transactionUserId": "m97cpsjs2yn2k6rt4kzgpk41v575s5tp",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 2500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-13",
+    "transactionUserId": "m97e9j3ys130rsgk33z6pmmcjh75rjnv",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1000,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-05",
+    "transactionUserId": "m97bc0gem45hcbypqd66bmntxx75r3q4",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 190000,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-08-03",
+    "transactionUserId": "m972kg29p7jxbbxa22gd0qa0yx75s93y",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 10000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-01",
+    "transactionUserId": "m97bqnxthyb4t8005bx60h0f3x75rvhc",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 3000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-03",
+    "transactionUserId": "m97e9j3ys130rsgk33z6pmmcjh75rjnv",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 5000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-04",
+    "transactionUserId": "m973dp58ex9e3j4m9hsmskntt575seg2",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-11",
+    "transactionUserId": "m978381s6zrqhdyvvq221pfmkd75rkrj",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 999,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-16",
+    "transactionUserId": "m976d8hcca8drfjkmhe67kj4n975rk2z",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 4999,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-12",
+    "transactionUserId": "m9740vqzvm6910vqvtzhfnx1k975s03c",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 3500,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-10",
+    "transactionUserId": "m978ef9et24n81x0nnwhdprb3175r6m5",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 10000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-08",
+    "transactionUserId": "m976emzrrhm44vkv3z011yndk175smd6",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  }
+]

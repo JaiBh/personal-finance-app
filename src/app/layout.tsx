@@ -3,7 +3,8 @@ import "./globals.css";
 import { Public_Sans } from "next/font/google";
 import { ConvexClientProvider } from "@/features/auth/components/ConvexClientProvider";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
-import Providers from "./Providers";
+import LoadingClientWrapper from "@/components/LoadingClientWrapper";
+import { Provider as JotaiProvider } from "jotai";
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
@@ -22,14 +23,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Providers>
-      <ConvexAuthNextjsServerProvider>
-        <html lang="en">
-          <body className={publicSans.className}>
-            <ConvexClientProvider>{children}</ConvexClientProvider>
-          </body>
-        </html>
-      </ConvexAuthNextjsServerProvider>
-    </Providers>
+    <ConvexAuthNextjsServerProvider>
+      <html lang="en">
+        <body className={publicSans.className}>
+          <JotaiProvider>
+            <ConvexClientProvider>
+              <LoadingClientWrapper>{children}</LoadingClientWrapper>
+            </ConvexClientProvider>
+          </JotaiProvider>
+        </body>
+      </html>
+    </ConvexAuthNextjsServerProvider>
   );
 }

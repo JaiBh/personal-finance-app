@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { IconType } from "react-icons";
 import { usePathname } from "next/navigation";
+import RouteLink from "../RouteLink";
 
 interface LinkProps {
   pageName: string;
@@ -18,14 +18,14 @@ function SmallSidebarLink(props: LinkProps) {
     <li
       className={`rounded-t-lg w-[68px] md:w-[104px] ${active ? "bg-white border-b-4 border-secondary-green" : "text-grey-300 hover:text-white transition-all"}`}
     >
-      <Link href={href} className="flex flex-col gap-1 items-center py-3">
+      <RouteLink href={href} className="flex flex-col gap-1 items-center py-3">
         <Icon className={`w-6 h-6 ${active && "text-secondary-green"}`}></Icon>
         <span
           className={`max-md:hidden text-present-5-bold ${active && "text-foreground"}`}
         >
           {pageName}
         </span>
-      </Link>
+      </RouteLink>
     </li>
   );
 }

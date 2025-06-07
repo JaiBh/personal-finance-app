@@ -3,9 +3,9 @@ import Image from "next/image";
 import logo from "@/assets/logoLarge.svg";
 import illustration from "@/assets/illustrationAuthentication.svg";
 
-function page() {
+function AuthPage() {
   return (
-    <div className="h-full grid max-xl:grid-rows-[auto,_1fr] xl:p-5 xl:grid-cols-[auto,_1fr]">
+    <div className="h-full grid max-xl:grid-rows-[auto,_1fr] xl:grid-cols-[auto,_1fr]  items-center xl:px-5">
       <aside className="max-xl:hidden">
         <Image
           src={illustration}
@@ -21,4 +21,4 @@ function page() {
     </div>
   );
 }
-export default page;
+export default AuthPage;

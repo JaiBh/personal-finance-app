@@ -16,12 +16,12 @@ const buttonVariants = cva(
         // from figma design
         primary: "bg-primary text-primary-foreground hover:bg-grey-500",
         secondary:
-          "bg-beige-100 hover:border-beige-500 hover:border-2 hover:bg-white",
+          "bg-background border-2 border-transparent hover:border-beige-500 hover:border-2 hover:bg-white",
         tertiary: "text-grey-500 hover:text-foreground",
         destroy: "text-primary-foreground bg-secondary-red hover:opacity-70",
       },
       size: {
-        default: "",
+        default: "p-4 rounded-lg min-h-[53px] min-w-[113px]",
         lg: "h-11 rounded-md px-8",
       },
     },

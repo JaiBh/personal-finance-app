@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { IconType } from "react-icons";
 import { usePathname } from "next/navigation";
+import RouteLink from "../RouteLink";
 
 interface LinkProps {
   href: string;
@@ -17,9 +17,9 @@ function ClosedSidebarLink(props: LinkProps) {
     <li
       className={`px-6 py-4 transition-all rounded-r-xl ${active ? "bg-white border-l-4 border-secondary-green" : "text-grey-300 hover:text-white"}`}
     >
-      <Link href={href} className="flex justify-center">
+      <RouteLink href={href} className="flex justify-center">
         <Icon className={`w-6 h-6 ${active && "text-foreground"}`}></Icon>
-      </Link>
+      </RouteLink>
     </li>
   );
 }

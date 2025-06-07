@@ -9,6 +9,8 @@ import { IoMdHome } from "react-icons/io";
 import { LuArrowDownUp } from "react-icons/lu";
 import { FaChartPie, FaReceipt, FaArrowLeft } from "react-icons/fa";
 import { MdSavings } from "react-icons/md";
+import { SignOutButton } from "@/features/auth/components/SignOutButton";
+import WipeUserButton from "@/features/wipeUser/components/WipeUserButton";
 
 function OpenSidebar() {
   const { setSidebarExpanded } = useGlobalContext();
@@ -49,6 +51,8 @@ function OpenSidebar() {
             pageName={"Recurring bills"}
             href={"/bills"}
           ></LargeSidebarLink>
+          <SignOutButton></SignOutButton>
+          <WipeUserButton></WipeUserButton>
         </ul>
         <Button
           className="mb-[4.625rem] gap-5 text-grey-300 hover:text-grey-100 pl-8 justify-start"

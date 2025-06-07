@@ -1,3 +1,4 @@
+import { JotaiProvider } from "@/components/JotaiProvider";
 import { AppProvider } from "../../context";
 
 function Providers({ children }: { children: React.ReactNode }) {

@@ -13,13 +13,13 @@
   },
   {
     "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm",
-    "category": "dining out",
+    "category": "dining-out",
     "maxSpend": 7500,
     "theme": "yellow"
   },
   {
     "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm",
-    "category": "personal care",
+    "category": "personal-care",
     "maxSpend": 10000,
     "theme": "navy"
   }

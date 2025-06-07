@@ -11,7 +11,7 @@ export function SignOutButton() {
 
   const handleSignOut = async () => {
     await signOut();
-    router.refresh();
+    router.replace("/auth");
   };
   return <Button onClick={handleSignOut}>Sign Out</Button>;
 }

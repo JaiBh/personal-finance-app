@@ -57,7 +57,7 @@ body,
       --accent-foreground: 24 9.8% 10%;
       --destructive: 0 84.2% 60.2%;
       --destructive-foreground: 60 9.1% 97.8%;
-      --border: 20 5.9% 90%;
+      --border: var(--clr-grey-500);
       --input: 20 5.9% 90%;
       --ring: 20 14.3% 4.1%;
       --radius: 0.5rem;
@@ -77,12 +77,6 @@ body,
 
   body {
     @apply bg-background text-foreground;
-  }
-  h1,
-  h2,
-  h3,
-  h4 {
-    @apply capitalize;
   }
 
   .text-present-1 {
@@ -108,9 +102,30 @@ body,
   }
 
   .section-center {
-    @apply max-w-[1060px] my-0 mx-auto w-[90%];
+    @apply max-w-[1060px] my-0 mx-auto w-[91.5%] 2xl:w-[93%];
   }
-  .page-title {
-    @apply text-present-1 mb-8 mt-6 md:mt-10;
+
+  @media screen and (min-width: 1440px) {
+    .overviewSummarySection {
+      gap: 1.5rem;
+      grid-template-columns: 59fr 41fr;
+      grid-template-rows: 30fr 24fr 46fr;
+      grid-template-areas:
+        "pots budgets"
+        "transactions budgets"
+        "transactions bills";
+    }
+    .overviewSummarySection article:nth-child(1) {
+      grid-area: pots;
+    }
+    .overviewSummarySection article:nth-child(2) {
+      grid-area: transactions;
+    }
+    .overviewSummarySection article:nth-child(3) {
+      grid-area: budgets;
+    }
+    .overviewSummarySection article:nth-child(4) {
+      grid-area: bills;
+    }
   }
 }

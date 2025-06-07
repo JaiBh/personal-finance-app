@@ -8,13 +8,13 @@ function largeSidebar() {
   const { sidebarExpanded } = useGlobalContext();
 
   return (
-    <aside className="bg-grey-900 rounded-r-xl h-screen">
+    <nav className="bg-grey-900 rounded-r-xl h-screen">
       {sidebarExpanded ? (
         <OpenSidebar></OpenSidebar>
       ) : (
         <ClosedSidebar></ClosedSidebar>
       )}
-    </aside>
+    </nav>
   );
 }
 export default largeSidebar;

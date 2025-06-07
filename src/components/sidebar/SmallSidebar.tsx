@@ -8,7 +8,7 @@ import SmallSidebarLink from "./SmallSidebarLink";
 
 function smallSidebar() {
   return (
-    <aside className="bg-grey-900 rounded-t-lg pt-4 px-4">
+    <nav className="bg-grey-900 rounded-t-lg pt-4 px-4">
       <ul className="flex justify-between max-w-[43rem] mt-0 mx-auto">
         <SmallSidebarLink
           Icon={IoMdHome}
@@ -36,7 +36,7 @@ function smallSidebar() {
           href={"/bills"}
         ></SmallSidebarLink>
       </ul>
-    </aside>
+    </nav>
   );
 }
 export default smallSidebar;

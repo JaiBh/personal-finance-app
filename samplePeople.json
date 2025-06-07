@@ -6,7 +6,7 @@
   },
   {
     "name": "Serenity Spa & Wellness",
-    "category": "personal care",
+    "category": "personal-care",
     "imageId": "kg24jgzr9b1q16yd1cd7bqa4t175rfpq"
   },
   {
@@ -36,12 +36,12 @@
   },
   {
     "name": "Savory Bites Bistro",
-    "category": "dining out",
+    "category": "dining-out",
     "imageId": "kg2e6cc0rh9jtgzfwxysk5bn6h75s3x1"
   },
   {
     "name": "Flavor Fiesta",
-    "category": "dining out",
+    "category": "dining-out",
     "imageId": "kg267b4y9jkxv1qqjygvnh6g3h75ssgs"
   },
   {
@@ -91,7 +91,7 @@
   },
   {
     "name": "Ethan Clark",
-    "category": "dining out",
+    "category": "dining-out",
     "imageId": "kg2fv20y8ns802a5nfjmdb61r175rxcz"
   },
   {
@@ -101,7 +101,7 @@
   },
   {
     "name": "Yuna Kim",
-    "category": "dining out",
+    "category": "dining-out",
     "imageId": "kg28mwed88yk3czcbh73gna5v975sdz1"
   },
   {
@@ -136,7 +136,7 @@
   },
   {
     "name": "Ella Phillips",
-    "category": "dining out",
+    "category": "dining-out",
     "imageId": "kg2013s5rm8pt32gffwhyp13pn75rr13"
   },
   {

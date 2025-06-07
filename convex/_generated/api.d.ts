@@ -1,5 +1,3 @@
-/* prettier-ignore-start */
-
 /* eslint-disable */
 /**
  * Generated `api` utility.
@@ -16,12 +14,16 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as auth from "../auth.js";
+import type * as authAccounts from "../authAccounts.js";
+import type * as avatars from "../avatars.js";
 import type * as bills from "../bills.js";
 import type * as budgets from "../budgets.js";
 import type * as http from "../http.js";
 import type * as pots from "../pots.js";
-import type * as transactions from "../transactions.js";
 import type * as transactionUsers from "../transactionUsers.js";
+import type * as transactions from "../transactions.js";
+import type * as userInfo from "../userInfo.js";
+import type * as users from "../users.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -33,12 +35,16 @@ import type * as transactionUsers from "../transactionUsers.js";
  */
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  authAccounts: typeof authAccounts;
+  avatars: typeof avatars;
   bills: typeof bills;
   budgets: typeof budgets;
   http: typeof http;
   pots: typeof pots;
-  transactions: typeof transactions;
   transactionUsers: typeof transactionUsers;
+  transactions: typeof transactions;
+  userInfo: typeof userInfo;
+  users: typeof users;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
@@ -48,5 +54,3 @@ export declare const internal: FilterApi<
   typeof fullApi,
   FunctionReference<any, "internal">
 >;
-
-/* prettier-ignore-end */

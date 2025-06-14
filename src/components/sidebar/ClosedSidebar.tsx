@@ -9,6 +9,7 @@ import { IoMdHome } from "react-icons/io";
 import { LuArrowDownUp } from "react-icons/lu";
 import { FaChartPie, FaReceipt, FaArrowRight } from "react-icons/fa";
 import { MdSavings } from "react-icons/md";
+import UserAvatar from "../UserAvatar";
 
 function ClosedSidebar() {
   const { setSidebarExpanded } = useGlobalContext();
@@ -24,6 +25,9 @@ function ClosedSidebar() {
       </div>
       <div className="flex flex-col justify-between h-full">
         <ul className="grid gap-1 pr-2">
+          <div className="mx-auto pb-4">
+            <UserAvatar></UserAvatar>
+          </div>
           <ClosedSidebarLink Icon={IoMdHome} href={"/"}></ClosedSidebarLink>
           <ClosedSidebarLink
             Icon={LuArrowDownUp}
@@ -44,7 +48,6 @@ function ClosedSidebar() {
         </ul>
         <Button
           className="mb-[4.625rem] text-grey-300 hover:text-grey-100 justify-center"
-          variant={"tertiary"}
           onClick={() => setSidebarExpanded(true)}
         >
           <FaArrowRight className="!h-5 !w-5"></FaArrowRight>

@@ -9,8 +9,7 @@ import { IoMdHome } from "react-icons/io";
 import { LuArrowDownUp } from "react-icons/lu";
 import { FaChartPie, FaReceipt, FaArrowLeft } from "react-icons/fa";
 import { MdSavings } from "react-icons/md";
-import { SignOutButton } from "@/features/auth/components/SignOutButton";
-import WipeUserButton from "@/features/wipeUser/components/WipeUserButton";
+import UserAvatar from "../UserAvatar";
 
 function OpenSidebar() {
   const { setSidebarExpanded } = useGlobalContext();
@@ -21,11 +20,14 @@ function OpenSidebar() {
           src={logo}
           alt={"logo"}
           priority
-          className="object-cover"
+          className="object-cover mx-auto"
         ></Image>
       </div>
       <div className="flex flex-col justify-between h-full">
         <ul className="grid gap-1 pr-6">
+          <div className="mx-auto pb-4">
+            <UserAvatar></UserAvatar>
+          </div>
           <LargeSidebarLink
             Icon={IoMdHome}
             pageName={"Overview"}
@@ -51,12 +53,9 @@ function OpenSidebar() {
             pageName={"Recurring bills"}
             href={"/bills"}
           ></LargeSidebarLink>
-          <SignOutButton></SignOutButton>
-          <WipeUserButton></WipeUserButton>
         </ul>
         <Button
           className="mb-[4.625rem] gap-5 text-grey-300 hover:text-grey-100 pl-8 justify-start"
-          variant={"tertiary"}
           onClick={() => setSidebarExpanded(false)}
         >
           <FaArrowLeft className="!h-5 !w-5"></FaArrowLeft>

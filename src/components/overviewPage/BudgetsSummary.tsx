@@ -1,22 +1,77 @@
-"use client";
-
+import { prismadb } from "@/lib/prismadb";
 import RouteLink from "../RouteLink";
-import Spinner from "../Spinner";
 import { Button } from "../ui/button";
-import BudgetsChart from "./BudgetsChart";
 import BudgetsInfo from "./BudgetsInfo";
-import { useGetBudgets } from "@/features/budgets/api/useGetBudgets";
+import { currentUser } from "@clerk/nextjs/server";
+import BudgetsChart from "../budgetsPage/BudgetsChart";
+import RedirectAuth from "../RedirectAuth";
 
-function BudgetsSummary() {
-  const { data: budgets, isLoading } = useGetBudgets();
-
-  if (isLoading) {
-    return (
-      <div className="2xl:h-full">
-        <Spinner></Spinner>
-      </div>
-    );
+async function BudgetsSummary() {
+  const today = new Date();
+  const thisMonth = new Date(today.getFullYear(), today.getMonth());
+  const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1);
+  const user = await currentUser();
+  if (!user) {
+    return <RedirectAuth></RedirectAuth>;
   }
+  const budgets = await prismadb.budget.findMany({
+    where: {
+      userId: user.id,
+    },
+    orderBy: { maxSpend: "desc" },
+  });
+
+  const formattedBudgets = await Promise.all(
+    budgets.map(async (budget) => {
+      const rawTransactions = await prismadb.transaction.findMany({
+        where: {
+          OR: [
+            {
+              userId: user.id,
+              sender: true,
+              transactionUser: {
+                category: budget.category,
+              },
+              createdAt: {
+                gte: thisMonth,
+                lt: nextMonth,
+              },
+            },
+            {
+              starter: true,
+              sender: true,
+              transactionUser: {
+                category: budget.category,
+              },
+              createdAt: {
+                gte: thisMonth,
+                lt: nextMonth,
+              },
+            },
+          ],
+        },
+        orderBy: { createdAt: "desc" },
+      });
+      const relevantTransactions = rawTransactions.map((item) => {
+        return { ...item, amount: Number(item.amount) };
+      });
+      return { ...budget, relevantTransactions };
+    })
+  );
+
+  const chartData = budgets.map((budget) => {
+    return {
+      category: budget.category,
+      maxSpend: Number(budget.maxSpend) / 100,
+      theme: budget.theme,
+    };
+  });
+
+  const totalSpend = formattedBudgets.reduce((acc, curr) => {
+    return (acc += curr.relevantTransactions.reduce((acc, curr) => {
+      return (acc += curr.amount);
+    }, 0));
+  }, 0);
 
   if (!budgets || !budgets.length) {
     return (
@@ -30,14 +85,14 @@ function BudgetsSummary() {
       </div>
     );
   }
-  const topBudgets = budgets
-    .sort((a, b) => b.maxSpend - a.maxSpend)
-    .slice(0, 4);
 
   return (
     <div className="grid gap-y-4 md:grid-cols-[1fr,_auto] md:max-lg:py-6 2xl:justify-between">
-      <BudgetsChart></BudgetsChart>
-      <BudgetsInfo topBudgets={topBudgets}></BudgetsInfo>
+      <BudgetsChart
+        chartData={chartData}
+        totalSpend={totalSpend}
+      ></BudgetsChart>
+      <BudgetsInfo topBudgets={budgets.slice(0, 4)}></BudgetsInfo>
     </div>
   );
 }

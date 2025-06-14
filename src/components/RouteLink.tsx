@@ -2,7 +2,6 @@
 
 import { useLoadingAtom } from "@/features/global/store/useLoadingAtom";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
 

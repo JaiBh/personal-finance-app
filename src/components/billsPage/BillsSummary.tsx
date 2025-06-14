@@ -1,30 +1,31 @@
 "use client";
 
-import { useGetBills } from "@/features/bills/api/useGetBills";
 import { FaReceipt } from "react-icons/fa";
-import Spinner from "../Spinner";
+import { ClientBill } from "../../../utils/types";
+import { categorizeBill } from "@/actions/categorizeBill";
 
-function BillsSummary() {
-  const { data: bills, isLoading } = useGetBills();
-  const totalBills = bills?.reduce((acc, curr) => acc + curr.amount, 0) || 0;
+interface BillsSummaryProps {
+  bills: ClientBill[];
+}
 
-  const today = new Date("2024-08-20").getDate();
+function BillsSummary({ bills }: BillsSummaryProps) {
+  const totalBillsAmount =
+    bills?.reduce((acc, curr) => acc + curr.amount, 0) || 0;
+
+  const today = new Date().getDate();
   const paidBills =
     bills?.filter((bill) => {
-      return Number(bill.billDayOfMonth) <= today;
+      return categorizeBill(bill) === "paid";
     }) || [];
 
   const upcomingBills =
     bills?.filter((bill) => {
-      return Number(bill.billDayOfMonth) > today;
+      return categorizeBill(bill) === "upcoming";
     }) || [];
 
   const dueSoonBills =
     bills?.filter((bill) => {
-      return (
-        Number(bill.billDayOfMonth) > today &&
-        Number(bill.billDayOfMonth) - today <= 5
-      );
+      return categorizeBill(bill) === "due soon";
     }) || [];
 
   return (
@@ -34,7 +35,7 @@ function BillsSummary() {
         <div className="space-y-3">
           <h4 className="text-present-4">Total bills : {bills?.length || 0}</h4>
 
-          <h1 className="text-present-1">${totalBills / 100}</h1>
+          <h1 className="text-present-1">${totalBillsAmount / 100}</h1>
         </div>
       </div>
       <div className="px-5 pt-6 pb-2 rounded-xl bg-card">

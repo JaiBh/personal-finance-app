@@ -5,7 +5,7 @@ import illustration from "@/assets/illustrationAuthentication.svg";
 
 function AuthPage() {
   return (
-    <div className="h-full grid max-xl:grid-rows-[auto,_1fr] xl:grid-cols-[auto,_1fr]  items-center xl:px-5">
+    <div className=" grid max-xl:grid-rows-[auto,_1fr] xl:grid-cols-[auto,_1fr] items-center xl:px-5 min-h-screen">
       <aside className="max-xl:hidden">
         <Image
           src={illustration}

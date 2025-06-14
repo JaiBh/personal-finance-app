@@ -1,21 +1,18 @@
-import { useGetBudgetInfo } from "@/hooks/useGetBudgetInfo";
-import { Budget } from "../../../utils/types";
-import { useGetTransactionsByCategoryMonthYearRecipientSender } from "@/features/transactions/api/useGetTransactionsByCategoryMonthYearRecipientSender";
+import { getBudgetInfo } from "@/actions/getBudgetInfo";
+import { ClientBudget, ClientTransaction } from "../../../utils/types";
 
-function BudgetSummaryInfo({ budget }: { budget: Budget }) {
-  const { maxSpend, category, theme } = budget;
+async function BudgetSummaryInfo({
+  budget,
+}: {
+  budget: ClientBudget & { relevantTransactions: ClientTransaction[] };
+}) {
+  const { maxSpend, category, theme, relevantTransactions } = budget;
 
-  const { data: relevantTransactions } =
-    useGetTransactionsByCategoryMonthYearRecipientSender({
-      category,
-      senderOrRecipient: "sender",
-    });
-
-  const { spent } = useGetBudgetInfo(maxSpend, relevantTransactions);
+  const { spent } = getBudgetInfo(maxSpend, relevantTransactions);
 
   return (
     <li
-      key={budget._id}
+      key={budget.id}
       style={{ borderLeftColor: `hsl(var(--clr-${theme}))` }}
       className="flex justify-between items-center border-l-4 pl-4"
     >

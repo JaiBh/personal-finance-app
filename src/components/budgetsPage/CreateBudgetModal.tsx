@@ -16,19 +16,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Category, Theme } from "../../../utils/types";
 import { categoryOptions, themeOptions } from "../../../utils/utils";
-import { useGetBudgets } from "@/features/budgets/api/useGetBudgets";
-import { useCreateBudget } from "@/features/budgets/api/useCreateBudget";
 import { toast } from "sonner";
 import { useCreateBudgetModal } from "@/features/budgets/store/useCreateBudgetModal";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 function CreateBudgetModal() {
   const [modal, setModal] = useCreateBudgetModal();
-  const usedCategories: Category[] = [];
-  const usedThemes: Theme[] = [];
-  const { data } = useGetBudgets();
-  const budgets = data || [];
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const usedCategories: string[] = [];
+  const usedThemes: string[] = [];
+  const { budgets } = modal;
 
   for (const { category, theme } of budgets) {
     usedCategories.push(category);
@@ -36,44 +37,54 @@ function CreateBudgetModal() {
   }
 
   // Order categories and themes, displaying the used ones last
-  const sortedCategoryOptions: Category[] = [
+  const sortedCategoryOptions: string[] = [
     ...categoryOptions.filter((option) => !usedCategories.includes(option)),
     ...usedCategories,
   ];
-  const sortedThemeOptions: Theme[] = [
+  const sortedThemeOptions: string[] = [
     ...themeOptions.filter((option) => !usedThemes.includes(option)),
     ...usedThemes,
   ];
 
   // Get the first un-used category and theme
-  const [category, setCategory] = useState<Category>(sortedCategoryOptions[0]);
-  const [theme, setTheme] = useState<Theme>(sortedThemeOptions[0]);
+  const [category, setCategory] = useState<string>(sortedCategoryOptions[0]);
+  const [theme, setTheme] = useState<string>(sortedThemeOptions[0]);
   const [maxSpend, setMaxSpend] = useState<number>(0);
 
-  const { mutate, isPending } = useCreateBudget();
-
   const handleClose = () => {
-    setModal({ open: false, isForced: false, altText: "" });
+    setModal({ open: false, isForced: false, altText: "", budgets: [] });
     setCategory(sortedCategoryOptions[0]);
     setTheme(sortedThemeOptions[0]);
     setMaxSpend(0);
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate(
-      { maxSpend: maxSpend * 100, category, theme },
-      {
-        onSuccess: () => {
-          toast.success("Budget Created!");
-        },
-        onError: (error) => {
-          toast.error("Oops, something went wrong. Unable to add budget");
-        },
-        onSettled: () => {
-          handleClose();
-        },
-      }
-    );
+    if (usedThemes.includes(theme)) {
+      // extra theme check
+      toast.error("This theme is already in use");
+      return;
+    }
+    if (usedCategories.includes(category)) {
+      // extra theme check
+      toast.error("This category is already in use");
+      return;
+    }
+    try {
+      setIsLoading(true);
+      await axios.post("/api/budgets", {
+        category,
+        maxSpend: maxSpend * 100,
+        theme,
+      });
+      handleClose();
+      toast.success("Budget Created!");
+      router.refresh();
+    } catch (err) {
+      console.log("Error creating budget", err);
+      toast.error("Something went wrong...");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -106,7 +117,7 @@ function CreateBudgetModal() {
             <Select
               name="category"
               value={category}
-              onValueChange={(e: Category) => {
+              onValueChange={(e: string) => {
                 setCategory(e);
               }}
             >
@@ -152,7 +163,7 @@ function CreateBudgetModal() {
             <Select
               name="theme"
               value={theme}
-              onValueChange={(e: Theme) => {
+              onValueChange={(e: string) => {
                 setTheme(e);
               }}
             >
@@ -179,12 +190,7 @@ function CreateBudgetModal() {
               </SelectContent>
             </Select>
           </div>
-          <Button
-            variant={"primary"}
-            className="w-full"
-            type="submit"
-            disabled={isPending}
-          >
+          <Button className="w-full" type="submit" disabled={isLoading}>
             Add Budget
           </Button>
         </form>

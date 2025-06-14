@@ -1,71 +1,47 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
 import { PiSortAscendingFill } from "react-icons/pi";
 import FormSelect from "../transactionsPage/FormSelect";
 import FormDropdown from "../transactionsPage/FormDropdown";
 import FormSearchInput from "../transactionsPage/FormSearchInput";
 import { sortByOptions } from "../../../utils/utils";
+import { useBillsFiltersAtom } from "@/features/bills/store/useBillsFiltersAtom";
 
 function BillsForm() {
-  const searchParams = useSearchParams();
-  const { replace } = useRouter();
+  const { filters, setFilters } = useBillsFiltersAtom();
 
-  const searchParam = searchParams.get("search") || "";
-  const sortByParam = searchParams.get("sortBy") || "oldest";
-
-  const [search, setSearch] = useState(searchParam);
-  const [sortBy, setSortBy] = useState(sortByParam);
-
-  useEffect(() => {
-    if (!searchParams.get("search")) {
-      setSearch("");
-    }
-    if (!searchParams.get("sortBy")) {
-      setSortBy("oldest");
-    }
-  }, [searchParams.get("search"), searchParams.get("sortBy")]);
-
-  const handleSearch = useDebouncedCallback(
-    ({ value, input }: { value: string; input: "sortBy" | "search" }) => {
-      const params = new URLSearchParams(searchParams);
-      if (!value) {
-        params.delete(input);
-      } else {
-        params.set(input, value);
-      }
-      replace(`/bills?${params.toString()}`);
-    },
-    500
-  );
+  const onSearchSubmit = (value: string) => {
+    setFilters({ sortBy: "latest", searchTerm: value });
+  };
   return (
-    <form className="grid gap-4 grid-cols-[1fr,_auto] items-center">
+    <div className="flex justify-between gap-8 items-center">
       <FormSearchInput
         placeholder="Search Bills"
-        state={search}
-        handleSearch={handleSearch}
-        setState={setSearch}
+        onSubmit={onSearchSubmit}
       ></FormSearchInput>
-      <FormSelect
-        options={sortByOptions}
-        state={sortBy}
-        setState={setSortBy}
-        handleSearch={handleSearch}
-        label="Sort By"
-        input="sortBy"
-        triggerWidth={114}
-      ></FormSelect>
-      <FormDropdown
-        options={sortByOptions}
-        state={sortBy}
-        setState={setSortBy}
-        handleSearch={handleSearch}
-        input="sortBy"
-        Icon={PiSortAscendingFill}
-      ></FormDropdown>
-    </form>
+      <div className="max-md:hidden">
+        <FormSelect
+          flex={true}
+          selected={filters.sortBy}
+          options={sortByOptions}
+          setFilters={(value: string) =>
+            setFilters({ ...filters, sortBy: value })
+          }
+          label="Sort By"
+          triggerWidth={114}
+        ></FormSelect>
+      </div>
+      <div className="md:hidden">
+        <FormDropdown
+          options={sortByOptions}
+          selected={filters.sortBy}
+          setFilters={(value: string) =>
+            setFilters({ ...filters, sortBy: value })
+          }
+          Icon={PiSortAscendingFill}
+        ></FormDropdown>
+      </div>
+    </div>
   );
 }
 export default BillsForm;

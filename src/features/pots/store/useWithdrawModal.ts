@@ -1,8 +1,15 @@
 import { atom, useAtom } from "jotai";
-import { Id } from "../../../../convex/_generated/dataModel";
-const modalState = atom<{ open: boolean; id: Id<"pots"> | null }>({
+import { Pot, TransactionUser } from "@/generated/prisma";
+import { ClientPot, ClientTransactionUser } from "../../../../utils/types";
+
+const modalState = atom<{
+  open: boolean;
+  pot: ClientPot | undefined;
+  transactionUser: ClientTransactionUser | undefined;
+}>({
   open: false,
-  id: null,
+  pot: undefined,
+  transactionUser: undefined,
 });
 
 export const useWithdrawModal = () => {

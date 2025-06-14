@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TransactionUser{
+  id String @id @default(uuid())
+  starter Boolean?
+  name String
+  category String
+  balance Decimal?
+  imageUrl String
+  userId String?
+  transactions Transaction[] @relation("TransactionUserToTransaction")
+  bills Bill[] @relation("TransactionUserToBill")
+ createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+
+model Transaction {
+  id String @id @default(uuid())
+  starter Boolean?
+  userId String
+  sender Boolean
+  name String
+  recipient Boolean
+  amount Decimal
+  recurringBill Boolean
+  transactionUserId String
+  transactionUser TransactionUser @relation("TransactionUserToTransaction",fields:[transactionUserId],references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Bill{
+  id String @id @default(uuid())
+  starter Boolean?
+  userId String
+  amount Decimal
+  billDayOfMonth Decimal
+  name String
+  transactionUserId String
+  transactionUser TransactionUser @relation("TransactionUserToBill",fields:[transactionUserId],references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Pot{
+  id String @id @default(uuid())
+  starter Boolean?
+userId String
+amount Decimal
+targetAmount Decimal
+name String
+theme String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Budget{
+  id String @id @default(uuid())
+  starter Boolean?
+userId String
+category String
+maxSpend Decimal
+theme String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ShiftDate{
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+}
+
+
+

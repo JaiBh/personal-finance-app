@@ -1,33 +1,51 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { SortBy } from "../../../utils/types";
 import NoResults from "../transactionsPage/NoResults";
 import Spinner from "../Spinner";
-import { useGetFilteredBills } from "@/features/bills/api/useGetFilteredBills";
 import LargeBillsList from "./LargeBillsList";
 import MobileBillsList from "./MobileBillsList";
-
-function isSortBy(value: string): value is SortBy {
-  return ["latest", "oldest", "a-z", "z-a", "highest", "lowest"].includes(
-    value
-  );
-}
+import { useEffect, useState } from "react";
+import { Bill, TransactionUser } from "@/generated/prisma";
+import { useBillsFiltersAtom } from "@/features/bills/store/useBillsFiltersAtom";
+import getBills from "@/actions/getBills";
+import { toast } from "sonner";
+import { Skeleton } from "../ui/skeleton";
 
 function BillsList() {
-  const searchParams = useSearchParams();
-  const search = searchParams.get("search") || "";
-  const sortBy = searchParams.get("sortBy") || "oldest";
+  const [loading, setLoading] = useState(true);
+  const [bills, setBills] = useState<
+    (Bill & { transactionUser: TransactionUser })[]
+  >([]);
+  const { filters } = useBillsFiltersAtom();
+  const { searchTerm, sortBy } = filters;
 
-  if (!isSortBy(sortBy)) {
-    return <NoResults info="bills"></NoResults>;
-  }
+  const fetchBills = async ({
+    bills,
+  }: {
+    bills: (Bill & { transactionUser: TransactionUser })[];
+  }) => {
+    try {
+      setLoading(true);
+      const previousBills = bills;
+      const billsResp = await getBills({
+        searchTerm: searchTerm.length ? searchTerm : undefined,
+        sortBy,
+      });
+      setBills([...previousBills, ...billsResp]);
+    } catch (err: any) {
+      console.log("Error fetching bills", err);
+      toast.error("Something went wrong...");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const { data, isLoading } = useGetFilteredBills(search, sortBy);
+  useEffect(() => {
+    setBills([]);
+    fetchBills({ bills: [] });
+  }, [filters]);
 
-  const bills = data || [];
-
-  if (isLoading) {
+  if (loading) {
     return <Spinner></Spinner>;
   }
 
@@ -43,3 +61,16 @@ function BillsList() {
   );
 }
 export default BillsList;
+
+function LoadingSkeleton() {
+  const times = 10;
+  return (
+    <>
+      {Array(times)
+        .fill(null)
+        .map((_, index) => {
+          return <Skeleton key={index} className="h-12"></Skeleton>;
+        })}
+    </>
+  );
+}

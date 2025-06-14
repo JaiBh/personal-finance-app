@@ -16,25 +16,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Theme } from "../../../utils/types";
 import { themeOptions } from "../../../utils/utils";
 import { toast } from "sonner";
-import { useGetPots } from "@/features/pots/api/useGetPots";
 import { useEditPotModal } from "@/features/pots/store/useEditPotModal";
-import { useEditPot } from "@/features/pots/api/useEditPot";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 function EditPotModal() {
   const [modal, setModal] = useEditPotModal();
-  const { mutate, isPending } = useEditPot();
-  const usedThemes: Theme[] = [];
-  const pots = useGetPots().data || [];
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const usedThemes: string[] = [];
+  const { pots, pot } = modal;
 
   for (const { theme } of pots) {
-    usedThemes.push(theme);
+    if (theme !== pot?.theme) {
+      usedThemes.push(theme);
+    }
   }
 
   // Order categories and themes, displaying the used ones last
-  const sortedThemeOptions: Theme[] = [
+  const sortedThemeOptions: string[] = [
     ...themeOptions.filter((option) => !usedThemes.includes(option)),
     ...usedThemes,
   ];
@@ -42,48 +44,48 @@ function EditPotModal() {
   // Get the first un-used category and theme
   const [name, setName] = useState<string>("");
   const maxNameLength = 30;
-  const [theme, setTheme] = useState<Theme>(sortedThemeOptions[0]);
+  const [theme, setTheme] = useState<string>(sortedThemeOptions[0]);
   const [target, setTarget] = useState<number>(0);
 
-  // Set up input/select values
   useEffect(() => {
-    const pot = pots.filter((pot) => {
-      if (pot._id === modal.id) {
-        return pot;
-      }
-    })[0];
-    if (pot) {
-      setName(pot.name);
-      setTheme(pot.theme);
-      setTarget(pot.targetAmount / 100);
-    }
-  }, [setName, setTheme, setTarget, pots, modal.open]);
+    if (!pot) return;
+    setLoading(true);
+    setName(pot.name);
+    setTarget(pot.targetAmount / 100);
+    setTheme(pot.theme);
+    setLoading(false);
+  }, [pot]);
 
   const handleClose = () => {
-    setModal({ open: false, id: null });
+    setModal({ open: false, pot: undefined, pots: [] });
     setName("");
     setTheme(sortedThemeOptions[0]);
     setTarget(0);
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate(
-      // @ts-ignore
-      { target: target * 100, name, theme, id: modal.id },
-      {
-        onSuccess: () => {
-          toast.success(`${name} Edited!`);
-          handleClose();
-        },
-        onError: (error) => {
-          toast.error(
-            `Oops, something went wrong. Unable to edit pot ${{ name }}`
-          );
-          handleClose();
-        },
-        onSettled: () => {},
-      }
-    );
+    if (pot?.theme !== theme && usedThemes.includes(theme)) {
+      // extra theme check
+      toast.error("This theme is already in use");
+      return;
+    }
+    try {
+      setLoading(true);
+      await axios.patch(`/api/pots/${pot?.id}`, {
+        targetAmount: target * 100,
+        name,
+        theme,
+        amount: pot?.amount || 0,
+      });
+      handleClose();
+      toast.success("Pot Updated!");
+      router.refresh();
+    } catch (err) {
+      console.log("Error patching pot", err);
+      toast.error("Something went wrong...");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -117,7 +119,11 @@ function EditPotModal() {
               />
             </div>
             <span
-              className={`text-present-5 text-grey-500 text-end block ${maxNameLength - name.length === 0 ? "text-secondary-red" : maxNameLength - name.length < 6 && "text-other-orange"}`}
+              className={`text-present-5 text-grey-500 text-end block ${
+                maxNameLength - name.length === 0
+                  ? "text-secondary-red"
+                  : maxNameLength - name.length < 6 && "text-other-orange"
+              }`}
             >
               {maxNameLength - name.length} characters left
             </span>
@@ -145,7 +151,7 @@ function EditPotModal() {
             <Select
               name="theme"
               value={theme}
-              onValueChange={(e: Theme) => {
+              onValueChange={(e: string) => {
                 setTheme(e);
               }}
             >
@@ -172,12 +178,7 @@ function EditPotModal() {
               </SelectContent>
             </Select>
           </div>
-          <Button
-            variant={"primary"}
-            className="w-full"
-            type="submit"
-            disabled={isPending}
-          >
+          <Button className="w-full" type="submit" disabled={loading}>
             Save Changes
           </Button>
         </form>

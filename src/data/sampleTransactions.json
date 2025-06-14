@@ -1,0 +1,585 @@
+[
+  {
+    "amount": 10000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-01",
+    "transactionUserId": "m978vm3dnqwe94vr406wkcwxwn762a33",
+    "name": "Spark Electric Solutions",
+    "category": "bills",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-02",
+    "transactionUserId": "m9729bvnz9r4mm9dyfa1mw6r4h762sjh",
+    "name": "Pixel Playground",
+    "category": "entertainment",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-02",
+    "transactionUserId": "m97785dcn5wwndpgn999hvr4j1762qap",
+    "name": "James Thompson",
+    "category": "entertainment",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 190000,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-07-03",
+    "transactionUserId": "m97c69skswd2qvx1dm9daf6qj1762nw1",
+    "name": "Buzz Marketing Group",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 3000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-03",
+    "transactionUserId": "m97cn8v3ybsxqmk1svxvxa96n1762r3r",
+    "name": "Serenity Spa & Wellness",
+    "category": "personal-care",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 5000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-04",
+    "transactionUserId": "m97e1ypvbr3ehc0pfvaj2de7fx762n86",
+    "name": "Elevate Education",
+    "category": "education",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 12000,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-07-05",
+    "transactionUserId": "m978x107fwn7r0bghw107c4ktd763y0k",
+    "name": "William Harris",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 6500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-06",
+    "transactionUserId": "m9771nzqbhkg51ka0ysq4x3mzh7638g7",
+    "name": "Sun Park",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 4230,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-07",
+    "transactionUserId": "m975znc09tjnzx0qtsq4ny32vh762x3t",
+    "name": "Daniel Carter",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 5550,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-07",
+    "transactionUserId": "m9709xpgk27fpbmvr2je5vbgas762k1c",
+    "name": "Ella Phillips",
+    "category": "dining-out",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 7550,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-07-07",
+    "transactionUserId": "m9715mz3nqj5deq49q1wxn94qh762zv7",
+    "name": "Lily Ramirez",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-08",
+    "transactionUserId": "m979ps6d51vs56ngb0z5jj68x5763khj",
+    "name": "Sebastian Cook",
+    "category": "transportation",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 10000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-08",
+    "transactionUserId": "m979t2kjwvcxvc3dwfam73rhzs7622p5",
+    "name": "Aqua Flow Utilities",
+    "category": "bills",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 3500,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-10",
+    "transactionUserId": "m97bxxay82wtaqxcff654axz0x763rzk",
+    "name": "EcoFuel Energy",
+    "category": "bills",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-11",
+    "transactionUserId": "m9729bvnz9r4mm9dyfa1mw6r4h762sjh",
+    "name": "Pixel Playground",
+    "category": "entertainment",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 4999,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-12",
+    "transactionUserId": "m97fwgd39c2dzhtvzwwfm4t0md763y2s",
+    "name": "ByteWise",
+    "category": "lifestyle",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 2500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-13",
+    "transactionUserId": "m97cn8v3ybsxqmk1svxvxa96n1762r3r",
+    "name": "Serenity Spa & Wellness",
+    "category": "personal-care",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 3250,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-14",
+    "transactionUserId": "m97fq3dbwctvtvf5qcs69601gx762tkc",
+    "name": "Yuna Kim",
+    "category": "dining-out",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 5000,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-07-14",
+    "transactionUserId": "m9754x3saddn0143t930g4jjr17639tk",
+    "name": "Emma Richardson",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-15",
+    "transactionUserId": "m9715mz3nqj5deq49q1wxn94qh762zv7",
+    "name": "Lily Ramirez",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 6575,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-07-15",
+    "transactionUserId": "m9768bnr38g1xd7n8gg8fp5vvx762hsx",
+    "name": "Liam Hughes",
+    "category": "groceries",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 999,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-16",
+    "transactionUserId": "m9788r64rshmckryc747n3c5a9762ah6",
+    "name": "Nimbus Data Storage",
+    "category": "bills",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 2150,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-17",
+    "transactionUserId": "m97c6a7etjzy9by50nwpv2fgwx763bm9",
+    "name": "Urban Services Hub",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1000,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-18",
+    "transactionUserId": "m974eg8xck9rn85axanydrwkr1762070",
+    "name": "Green Plate Eatery",
+    "category": "groceries",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 45000,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-07-19",
+    "transactionUserId": "m97c69skswd2qvx1dm9daf6qj1762nw1",
+    "name": "Buzz Marketing Group",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1299,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-21",
+    "transactionUserId": "m976tsk4rmx5e0fd012bxtfcg1762wdk",
+    "name": "Swift Ride Share",
+    "category": "transportation",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 499,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-23",
+    "transactionUserId": "m974eg8xck9rn85axanydrwkr1762070",
+    "name": "Green Plate Eatery",
+    "category": "groceries",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1499,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-24",
+    "transactionUserId": "m97c6a7etjzy9by50nwpv2fgwx763bm9",
+    "name": "Urban Services Hub",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1099,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-25",
+    "transactionUserId": "m97c80j211amtez81gv4zm6h8h763tm6",
+    "name": "Savory Bites Bistro",
+    "category": "dining-out",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1999,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-29",
+    "transactionUserId": "m97d5z79739rwvfj4d3t7t8g9x7638v0",
+    "name": "TechNova Innovations",
+    "category": "shopping",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 3099,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-07-30",
+    "transactionUserId": "m97f11zkcexff6k8c9ehe7kwps762hcq",
+    "name": "Flavor Fiesta",
+    "category": "dining-out",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+
+  {
+    "amount": 10000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-01",
+    "transactionUserId": "m978vm3dnqwe94vr406wkcwxwn762a33",
+    "name": "Spark Electric Solutions",
+    "category": "bills",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 2150,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-02",
+    "transactionUserId": "m97523da4atgp5gv4518x0rgzn762erw",
+    "name": "Harper Edwards",
+    "category": "shopping",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 190000,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-08-03",
+    "transactionUserId": "m97c69skswd2qvx1dm9daf6qj1762nw1",
+    "name": "Buzz Marketing Group",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 3000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-03",
+    "transactionUserId": "m97cn8v3ybsxqmk1svxvxa96n1762r3r",
+    "name": "Serenity Spa & Wellness",
+    "category": "personal-care",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 5000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-04",
+    "transactionUserId": "m97e1ypvbr3ehc0pfvaj2de7fx762n86",
+    "name": "Elevate Education",
+    "category": "education",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+
+  {
+    "amount": 2150,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-04",
+    "transactionUserId": "m97c6a7etjzy9by50nwpv2fgwx763bm9",
+    "name": "Urban Services Hub",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1000,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-05",
+    "transactionUserId": "m974eg8xck9rn85axanydrwkr1762070",
+    "name": "Green Plate Eatery",
+    "category": "groceries",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 45000,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-08-07",
+    "transactionUserId": "m97c69skswd2qvx1dm9daf6qj1762nw1",
+    "name": "Buzz Marketing Group",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 10000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-08",
+    "transactionUserId": "m979t2kjwvcxvc3dwfam73rhzs7622p5",
+    "name": "Aqua Flow Utilities",
+    "category": "bills",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 2500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-09",
+    "transactionUserId": "m97cn8v3ybsxqmk1svxvxa96n1762r3r",
+    "name": "Serenity Spa & Wellness",
+    "category": "personal-care",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 3500,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-10",
+    "transactionUserId": "m97bxxay82wtaqxcff654axz0x763rzk",
+    "name": "EcoFuel Energy",
+    "category": "bills",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-11",
+    "transactionUserId": "m9729bvnz9r4mm9dyfa1mw6r4h762sjh",
+    "name": "Pixel Playground",
+    "category": "entertainment",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-11",
+    "transactionUserId": "m97785dcn5wwndpgn999hvr4j1762qap",
+    "name": "James Thompson",
+    "category": "entertainment",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1000,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-11",
+    "transactionUserId": "m9729bvnz9r4mm9dyfa1mw6r4h762sjh",
+    "name": "Pixel Playground",
+    "category": "entertainment",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 4999,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-12",
+    "transactionUserId": "m97fwgd39c2dzhtvzwwfm4t0md763y2s",
+    "name": "ByteWise",
+    "category": "lifestyle",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 2500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-13",
+    "transactionUserId": "m97cn8v3ybsxqmk1svxvxa96n1762r3r",
+    "name": "Serenity Spa & Wellness",
+    "category": "personal-care",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 3250,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-13",
+    "transactionUserId": "m97fq3dbwctvtvf5qcs69601gx762tkc",
+    "name": "Yuna Kim",
+    "category": "dining-out",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 5000,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-08-14",
+    "transactionUserId": "m9754x3saddn0143t930g4jjr17639tk",
+    "name": "Emma Richardson",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 1500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-15",
+    "transactionUserId": "m9715mz3nqj5deq49q1wxn94qh762zv7",
+    "name": "Lily Ramirez",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 6575,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-08-15",
+    "transactionUserId": "m9768bnr38g1xd7n8gg8fp5vvx762hsx",
+    "name": "Liam Hughes",
+    "category": "groceries",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 999,
+    "recurringBill": true,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-16",
+    "transactionUserId": "m9788r64rshmckryc747n3c5a9762ah6",
+    "name": "Nimbus Data Storage",
+    "category": "bills",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 12000,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-08-17",
+    "transactionUserId": "m978x107fwn7r0bghw107c4ktd763y0k",
+    "name": "William Harris",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 6500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-17",
+    "transactionUserId": "m9771nzqbhkg51ka0ysq4x3mzh7638g7",
+    "name": "Sun Park",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 4230,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-18",
+    "transactionUserId": "m975znc09tjnzx0qtsq4ny32vh762x3t",
+    "name": "Daniel Carter",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 5550,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-19",
+    "transactionUserId": "m9709xpgk27fpbmvr2je5vbgas762k1c",
+    "name": "Ella Phillips",
+    "category": "dining-out",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+  {
+    "amount": 7550,
+    "recurringBill": false,
+    "senderOrRecipient": "recipient",
+    "transactionDate": "2024-08-19",
+    "transactionUserId": "m9715mz3nqj5deq49q1wxn94qh762zv7",
+    "name": "Lily Ramirez",
+    "category": "general",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  },
+
+  {
+    "amount": 1500,
+    "recurringBill": false,
+    "senderOrRecipient": "sender",
+    "transactionDate": "2024-08-19",
+    "transactionUserId": "m979ps6d51vs56ngb0z5jj68x5763khj",
+    "name": "Sebastian Cook",
+    "category": "transportation",
+    "userId": "k57bzysq79bbsjy9zasa8jsrcd72wtkm"
+  }
+]

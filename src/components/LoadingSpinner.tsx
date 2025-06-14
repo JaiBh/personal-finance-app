@@ -1,19 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
-
-export default function LoadingSpinner() {
+import { clsx } from "clsx";
+export default function LoadingSpinner({ className }: { className?: string }) {
   return (
-    <div className="flex items-center justify-center h-full w-full p-4">
-      <motion.div
-        className="w-12 h-12 border-4 border-t-transparent border-blue-500 rounded-full"
-        animate={{ rotate: 360 }}
-        transition={{
-          repeat: Infinity,
-          ease: "linear",
-          duration: 1,
-        }}
-      />
+    <div className="flex items-center justify-center h-full w-full">
+      <div
+        className={clsx(
+          "border-[3px] border-t-[3px] border-[#f3f3f3] rounded-[50%] border-t-[#3498db] animate-spin size-12",
+          className
+        )}
+      ></div>
     </div>
   );
 }

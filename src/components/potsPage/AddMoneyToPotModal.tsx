@@ -10,32 +10,19 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { useAddMoneyModal } from "@/features/pots/store/useAddMoneyModal";
-import { useGetPots } from "@/features/pots/api/useGetPots";
-import { toast } from "sonner";
 import { useConfirm } from "@/hooks/useConfirm";
-import { useGetUserInfo } from "@/features/userInfo/api/useGetUserInfo";
-import { usePotTransfer } from "@/features/pots/api/usePotTransfer";
-import { useCreateTransaction } from "@/features/transactions/api/useCreateTransaction";
-import { useGetTransactionUsers } from "@/features/transactionUsers/api/useGetTransactionUsers";
-import { TransactionUser } from "../../../utils/types";
+import { toast } from "sonner";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 function AddMoneyToPotModal() {
   const [modal, setModal] = useAddMoneyModal();
-  const { mutate, isPending } = usePotTransfer();
-  const { mutate: transactionMutate } = useCreateTransaction();
+  const router = useRouter();
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure?",
     "Are you sure you want to add money to this pot?"
   );
-  const pots = useGetPots().data || [];
-  const { data: userInfo } = useGetUserInfo();
-  const { data: transactionUsers } = useGetTransactionUsers();
-  let transactionUser: TransactionUser | undefined;
-  if (userInfo) {
-    transactionUser = transactionUsers?.filter(
-      (user) => userInfo.transactionUserId === user._id
-    )[0];
-  }
+  const { pot, transactionUser } = modal;
 
   // Get the first un-used category and theme
   const [originalAmount, setOriginalAmount] = useState<number>(0);
@@ -44,13 +31,9 @@ function AddMoneyToPotModal() {
   const [newAmount, setNewAmount] = useState<number>(0);
   const [target, setTarget] = useState<number>(0);
   const [remaining, setRemaining] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const pot = pots.filter((pot) => {
-      if (pot._id === modal.id) {
-        return pot;
-      }
-    })[0];
     if (pot) {
       setOriginalAmount(pot.amount / 100);
       setNewAmount(pot.amount / 100);
@@ -59,11 +42,12 @@ function AddMoneyToPotModal() {
       setRemaining(
         Number((pot.targetAmount / 100 - pot.amount / 100).toFixed(2))
       );
+      setLoading(false);
     }
-  }, [setOriginalAmount, setName, setNewAmount, setTarget, pots, modal.open]);
+  }, [pot]);
 
   const handleClose = () => {
-    setModal({ open: false, id: null });
+    setModal({ open: false, pot: undefined, transactionUser: undefined });
     setOriginalAmount(0);
     setName("");
     setNewAmount(0);
@@ -74,7 +58,7 @@ function AddMoneyToPotModal() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!modal.id || !transactionUser) {
+    if (!pot || !transactionUser?.balance) {
       return;
     }
 
@@ -82,39 +66,66 @@ function AddMoneyToPotModal() {
 
     if (!ok) return;
 
-    mutate(
-      {
-        change: add * 100,
-        id: modal.id,
-        addOrWithdraw: "add",
-        newAmount: newAmount * 100,
-      },
-      {
-        onSuccess: () => {
-          toast.success(`Funds added to ${name}!`);
-          handleClose();
-          transactionMutate({
-            senderOrRecipient: "sender",
-            transactionUserId: transactionUser._id,
-            amount: add * 100,
-            category: "general",
-            name: transactionUser.name,
-            transactionDate: `2024-08-20`,
-            recurringBill: false,
-          });
-        },
-        onError: (error) => {
-          toast.error(
-            `Oops, something went wrong. Unable to add funds to ${name} ${error.message}`
-          );
-          handleClose();
-        },
-        onSettled: () => {},
-      }
-    );
-  };
+    try {
+      setLoading(true);
+      // add to pot
+      await axios.patch(`/api/pots/${pot.id}`, {
+        amount: newAmount * 100,
+        name: pot.name,
+        targetAmount: pot.targetAmount,
+        theme: pot.theme,
+      });
 
-  if (!userInfo || !transactionUser) return;
+      // change balance
+      try {
+        await axios.patch(`/api/transactionUsers/${transactionUser.id}`, {
+          balance: (transactionUser.balance / 100 - add) * 100,
+        });
+
+        // create transaction
+        try {
+          await axios.post("/api/transactions", {
+            amount: add * 100,
+            sender: true,
+          });
+          toast.success("Funds added to pot!");
+          handleClose();
+          router.refresh();
+        } catch (err) {
+          toast.error("Something went wrong...");
+          console.log("Error creating new transaction", err);
+
+          // reverse pot patch
+          await axios.patch(`/api/pots/${pot.id}`, {
+            amount: pot.amount,
+            theme: pot.theme,
+            name: pot.name,
+            targetAmount: pot.targetAmount,
+          });
+
+          // reverse balance patch
+          await axios.patch(`/api/transactionUsers/${transactionUser.id}`, {
+            balance: transactionUser.balance,
+          });
+        }
+      } catch (err) {
+        toast.error("Something went wrong...");
+        console.log("Error patching transaction user balance", err);
+        // reverse pot patch
+        await axios.patch(`/api/pots/${pot.id}`, {
+          amount: pot.amount,
+          theme: pot.theme,
+          name: pot.name,
+          targetAmount: pot.targetAmount,
+        });
+      }
+    } catch (err) {
+      console.log("Error adding money to pot", err);
+      toast.error("Something went wrong...");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -177,8 +188,9 @@ function AddMoneyToPotModal() {
                 value={add === 0 ? "" : add || ""}
                 step="0.01"
                 onChange={(e) => {
-                  if (Number(e.target.value) > userInfo.balance / 100) {
-                    setAdd(userInfo.balance / 100);
+                  if (!transactionUser?.balance) return;
+                  if (Number(e.target.value) > transactionUser.balance / 100) {
+                    setAdd(transactionUser.balance / 100);
                     setNewAmount(
                       originalAmount +
                         roundDownToTwoDecimals(Number(e.target.value))
@@ -198,13 +210,8 @@ function AddMoneyToPotModal() {
                 }}
               />
             </div>
-            <Button
-              variant={"primary"}
-              className="w-full mt-4"
-              type="submit"
-              disabled={isPending}
-            >
-              Confirm Addition
+            <Button className="w-full mt-4" type="submit" disabled={loading}>
+              {loading ? "Loading..." : "Confirm Addition"}
             </Button>
           </form>
         </DialogContent>

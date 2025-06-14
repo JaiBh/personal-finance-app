@@ -1,20 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { SignInFlow } from "../types";
 import { useState } from "react";
-import { useAuthActions } from "@convex-dev/auth/react";
 import { TriangleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useSignUp } from "@clerk/nextjs";
 
 interface SignUpProps {
   setState: (state: SignInFlow) => void;
@@ -22,7 +16,7 @@ interface SignUpProps {
 
 const SignUpCard = ({ setState }: SignUpProps) => {
   const router = useRouter();
-  const { signIn } = useAuthActions();
+  const { signUp, setActive, isLoaded } = useSignUp();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,26 +24,41 @@ const SignUpCard = ({ setState }: SignUpProps) => {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
 
-  const onPasswordSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+  const onPasswordSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isLoaded) return;
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-    setPending(true);
-    signIn("password", { name, email, password, flow: "signUp" })
-      .catch(() => {
-        setError("Something went wrong");
-      })
-      .finally(() => {
-        setPending(false);
-        router.refresh();
+    try {
+      console.log(email, password);
+      setPending(true);
+      const result = await signUp.create({
+        emailAddress: email,
+        password,
       });
-  };
-  const onProviderSignup = (value: "github" | "google") => {
-    setPending(true);
-    signIn(value).finally(() => {
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+        router.refresh();
+      } else {
+        console.log("no");
+        router.push("/verify-email");
+      }
+    } catch (err: any) {
+      setError(err.errors?.[0]?.message || "Something went wrong");
+    } finally {
       setPending(false);
+    }
+  };
+  const onProviderSignup = (provider: "github" | "google" | "slack") => {
+    if (!isLoaded) return;
+    signUp.authenticateWithRedirect({
+      strategy: `oauth_${provider}`,
+      redirectUrl: "/",
+      redirectUrlComplete: "/",
     });
   };
   return (
@@ -134,6 +143,16 @@ const SignUpCard = ({ setState }: SignUpProps) => {
           >
             <FaGithub className="size-5 absolute left-2.5 top-3"></FaGithub>
             Sign up with Github
+          </Button>
+          <Button
+            disabled={pending}
+            onClick={() => onProviderSignup("slack")}
+            variant={"outline"}
+            size={"lg"}
+            className="w-full relative"
+          >
+            <FaGithub className="size-5 absolute left-2.5 top-3"></FaGithub>
+            Sign up with Slack
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">

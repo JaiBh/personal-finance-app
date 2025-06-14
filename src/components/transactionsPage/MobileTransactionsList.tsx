@@ -1,10 +1,9 @@
+import { Transaction, TransactionUser } from "@/generated/prisma";
 import { Table, TableBody } from "../ui/table";
-
-import { Transaction } from "../../../utils/types";
 import MobileListRow from "./MobileListRow";
 
 interface MobileTransactionsProps {
-  transactions: Transaction[];
+  transactions: (Transaction & { transactionUser: TransactionUser })[];
 }
 
 function MobileTransactionsList({ transactions }: MobileTransactionsProps) {
@@ -15,7 +14,7 @@ function MobileTransactionsList({ transactions }: MobileTransactionsProps) {
           return (
             <MobileListRow
               transaction={transaction}
-              key={transaction._id}
+              key={transaction.id}
             ></MobileListRow>
           );
         })}

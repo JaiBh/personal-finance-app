@@ -1,5 +1,3 @@
-"use client";
-
 import BillsCard from "./BillsCard";
 import BudgetsCard from "./BudgetsCard";
 import PotsCard from "./PotsCard";

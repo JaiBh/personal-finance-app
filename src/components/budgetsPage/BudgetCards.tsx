@@ -1,48 +1,81 @@
-"use client";
-
-import { useGetBudgets } from "@/features/budgets/api/useGetBudgets";
 import BudgetsSummaryCard from "./BudgetsSummaryCard";
 import BudgetCard from "./BudgetCard";
-import { useCreateBudgetModal } from "@/features/budgets/store/useCreateBudgetModal";
-import { useEffect } from "react";
-import Spinner from "../Spinner";
+import { ClientBudget } from "../../../utils/types";
+import InitialBudgetGate from "./InitialBudgetGate";
+import RedirectAuth from "../RedirectAuth";
+import { currentUser } from "@clerk/nextjs/server";
+import { prismadb } from "@/lib/prismadb";
 
-function BudgetCards() {
-  const { data: budgets, isLoading } = useGetBudgets();
-  const [_modal, setModal] = useCreateBudgetModal();
+interface BudgetCardsProps {
+  budgets: ClientBudget[];
+}
 
-  useEffect(() => {
-    if (isLoading) {
-      return;
-    } else if (!budgets || budgets?.length < 1) {
-      setModal({
-        open: true,
-        isForced: true,
-        altText: "add first budget",
+async function BudgetCards({ budgets }: BudgetCardsProps) {
+  if (budgets.length < 1) {
+    return <InitialBudgetGate budgets={budgets}></InitialBudgetGate>;
+  }
+
+  const user = await currentUser();
+  if (!user) {
+    return <RedirectAuth></RedirectAuth>;
+  }
+
+  const today = new Date();
+  const thisMonth = new Date(today.getFullYear(), today.getMonth());
+  const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1);
+
+  const formattedBudgets = await Promise.all(
+    budgets.map(async (budget) => {
+      const rawTransactions = await prismadb.transaction.findMany({
+        where: {
+          OR: [
+            {
+              userId: user.id,
+              sender: true,
+              transactionUser: {
+                category: budget.category,
+              },
+              createdAt: {
+                gte: thisMonth,
+                lt: nextMonth,
+              },
+            },
+            {
+              starter: true,
+              sender: true,
+              transactionUser: {
+                category: budget.category,
+              },
+              createdAt: {
+                gte: thisMonth,
+                lt: nextMonth,
+              },
+            },
+          ],
+        },
+        orderBy: { createdAt: "desc" },
       });
-    }
-  }, [isLoading, budgets, setModal]);
-
-  if (isLoading) {
-    return (
-      <div className="section-center p-6 bg-card">
-        <Spinner></Spinner>
-      </div>
-    );
-  }
-
-  if (!budgets?.length || !budgets) {
-    return;
-  }
+      const relevantTransactions = rawTransactions.map((item) => {
+        return { ...item, amount: Number(item.amount) };
+      });
+      return { ...budget, relevantTransactions };
+    })
+  );
 
   return (
     <section className="section-center max-2xl:space-y-6 2xl:grid 2xl:grid-cols-[2fr,_3fr] 2xl:gap-6">
       <div>
-        <BudgetsSummaryCard></BudgetsSummaryCard>
+        <BudgetsSummaryCard budgets={formattedBudgets}></BudgetsSummaryCard>
       </div>
       <div className="space-y-6">
-        {budgets?.map((budget) => {
-          return <BudgetCard budget={budget} key={budget._id}></BudgetCard>;
+        {formattedBudgets?.map((budget) => {
+          return (
+            <BudgetCard
+              budget={budget}
+              key={budget.id}
+              budgets={budgets}
+            ></BudgetCard>
+          );
         })}
       </div>
     </section>

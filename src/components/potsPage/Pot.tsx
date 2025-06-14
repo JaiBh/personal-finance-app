@@ -1,25 +1,36 @@
+"use client";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Pot as PotType } from "../../../utils/types";
 import { Ellipsis } from "lucide-react";
 import { useConfirm } from "@/hooks/useConfirm";
-import { useDeletePot } from "@/features/pots/api/useDeletePot";
-import { toast } from "sonner";
 import { useEditPotModal } from "@/features/pots/store/useEditPotModal";
 import { Button } from "../ui/button";
 import { useAddMoneyModal } from "@/features/pots/store/useAddMoneyModal";
 import { useWithdrawModal } from "@/features/pots/store/useWithdrawModal";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { toast } from "sonner";
+import { useLoadingAtom } from "@/features/global/store/useLoadingAtom";
+import { ClientPot, ClientTransactionUser } from "../../../utils/types";
 
-function Pot({ pot }: { pot: PotType }) {
-  const { mutate, isPending } = useDeletePot();
+interface PotProps {
+  pots: ClientPot[];
+  pot: ClientPot;
+  transactionUser: ClientTransactionUser;
+}
+
+function Pot({ pots, pot, transactionUser }: PotProps) {
+  const router = useRouter();
   const [_editModal, setEditModal] = useEditPotModal();
   const [_addMoneyModal, setAddMoneyModal] = useAddMoneyModal();
   const [_withdrawModal, setWithdrawModal] = useWithdrawModal();
-  const { targetAmount, amount, _id: id, theme, name } = pot;
+  const [{ isLoading }, setLoading] = useLoadingAtom();
+  const { targetAmount, amount, theme, name } = pot;
 
   const savedPercentage = ((amount / targetAmount) * 100).toFixed(2);
 
@@ -29,44 +40,50 @@ function Pot({ pot }: { pot: PotType }) {
   );
 
   const deletePot = async () => {
+    if (pot.amount > 0) {
+      toast.error("Remove funds before deleting a pot");
+      return;
+    }
     const ok = await confirm();
 
     if (!ok) {
       return;
     }
-    mutate(
-      {
-        id: pot._id,
-      },
-      {
-        onSuccess() {
-          toast.success("Pot removed");
-        },
-        onError() {
-          toast.error("Failed to remove pot");
-        },
-      }
-    );
+
+    try {
+      setLoading({ isLoading: true });
+      await axios.delete(`/api/pots/${pot.id}`);
+      toast.success("Pot deleted!");
+      router.refresh();
+    } catch (err) {
+      console.log("Error deleting pot", err);
+      toast.error("Something went wrong...");
+    } finally {
+      setLoading({ isLoading: false });
+    }
   };
 
   const editPot = () => {
     setEditModal({
       open: true,
-      id,
+      pot,
+      pots,
     });
   };
 
   const addMoney = () => {
     setAddMoneyModal({
       open: true,
-      id,
+      pot,
+      transactionUser,
     });
   };
 
   const withdraw = () => {
     setWithdrawModal({
       open: true,
-      id,
+      pot,
+      transactionUser,
     });
   };
   return (
@@ -93,7 +110,7 @@ function Pot({ pot }: { pot: PotType }) {
               <DropdownMenuItem
                 className="text-present-4 text-secondary-red focus:text-secondary-red"
                 onClick={deletePot}
-                disabled={isPending}
+                disabled={isLoading}
               >
                 Delete Pot
               </DropdownMenuItem>

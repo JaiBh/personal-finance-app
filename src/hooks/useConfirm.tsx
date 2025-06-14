@@ -3,11 +3,10 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { JSX, useState } from "react";
 
 export const useConfirm = (
   title: string,
@@ -48,16 +47,12 @@ export const useConfirm = (
         <div className="pt-2 space-y-2">
           <Button
             onClick={handleConfirm}
-            variant={"destroy"}
+            variant={"destructive"}
             className="w-full block"
           >
             Confirm
           </Button>
-          <Button
-            onClick={handleCancel}
-            className="w-full"
-            variant={"tertiary"}
-          >
+          <Button onClick={handleCancel} className="w-full">
             No, Go Back
           </Button>
         </div>

@@ -16,76 +16,88 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Category, Theme } from "../../../utils/types";
 import { categoryOptions, themeOptions } from "../../../utils/utils";
-import { useGetBudgets } from "@/features/budgets/api/useGetBudgets";
 import { toast } from "sonner";
 import { useEditBudgetModal } from "@/features/budgets/store/useEditBudgetModal";
-import { useEditBudget } from "@/features/budgets/api/useEditBudget";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 function EditBudgetModal() {
+  const router = useRouter();
   const [modal, setModal] = useEditBudgetModal();
-  const { mutate, isPending } = useEditBudget();
+  const [loading, setLoading] = useState(true);
 
-  const usedCategories: Category[] = [];
-  const usedThemes: Theme[] = [];
-  const budgets = useGetBudgets().data || [];
+  const usedCategories: string[] = [];
+  const usedThemes: string[] = [];
+  const { budget, budgets } = modal;
 
   for (const { category, theme } of budgets) {
-    usedCategories.push(category);
-    usedThemes.push(theme);
+    if (category !== budget?.category) {
+      usedCategories.push(category);
+    }
+    if (theme !== budget?.theme) {
+      usedThemes.push(theme);
+    }
   }
 
   // Order categories and themes, displaying the used ones last
-  const sortedCategoryOptions: Category[] = [
+  const sortedCategoryOptions: string[] = [
     ...categoryOptions.filter((option) => !usedCategories.includes(option)),
     ...usedCategories,
   ];
-  const sortedThemeOptions: Theme[] = [
+  const sortedThemeOptions: string[] = [
     ...themeOptions.filter((option) => !usedThemes.includes(option)),
     ...usedThemes,
   ];
 
-  const [category, setCategory] = useState<Category>(sortedCategoryOptions[0]);
-  const [theme, setTheme] = useState<Theme>(sortedThemeOptions[0]);
-  const [maxSpend, setMaxSpend] = useState<number | null>(null);
+  const [category, setCategory] = useState<string>(sortedCategoryOptions[0]);
+  const [theme, setTheme] = useState<string>(sortedThemeOptions[0]);
+  const [maxSpend, setMaxSpend] = useState<number>(0);
 
   // Set up input/select values
   useEffect(() => {
-    const budget = budgets.filter((budget) => {
-      if (budget._id === modal.id) {
-        return budget;
-      }
-    })[0];
     if (budget) {
+      setLoading(true);
       setCategory(budget.category);
       setTheme(budget.theme);
       setMaxSpend(budget.maxSpend / 100);
+      setLoading(false);
     }
-  }, [setCategory, setTheme, setMaxSpend, budgets, modal.open]);
+  }, [budget]);
 
   const handleClose = () => {
-    setModal({ open: false, id: null });
+    setModal({ open: false, budget: undefined, budgets: [] });
     setCategory(sortedCategoryOptions[0]);
     setTheme(sortedThemeOptions[0]);
     setMaxSpend(0);
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate(
-      // @ts-ignore
-      { maxSpend: maxSpend * 100, category, theme, id: modal.id },
-      {
-        onSuccess: () => {
-          toast.success("Budget Created!");
-          handleClose();
-        },
-        onError: (error) => {
-          toast.error("Oops, something went wrong. Unable to edit budget");
-        },
-        onSettled: () => {},
-      }
-    );
+    if (budget?.theme !== theme && usedThemes.includes(theme)) {
+      // extra theme check
+      toast.error("This theme is already in use");
+      return;
+    }
+    if (budget?.category !== category && usedCategories.includes(category)) {
+      // extra theme check
+      toast.error("This theme is already in use");
+      return;
+    }
+    try {
+      setLoading(true);
+      await axios.patch(`/api/budgets/${budget?.id}`, {
+        category,
+        maxSpend: maxSpend * 100,
+        theme,
+      });
+      handleClose();
+      toast.success("Budget Updated!");
+      router.refresh();
+    } catch (err) {
+      console.log("Error updating budget", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -107,7 +119,7 @@ function EditBudgetModal() {
             <Select
               name="category"
               value={category}
-              onValueChange={(e: Category) => {
+              onValueChange={(e: string) => {
                 setCategory(e);
               }}
             >
@@ -154,7 +166,7 @@ function EditBudgetModal() {
             <Select
               name="theme"
               value={theme}
-              onValueChange={(e: Theme) => {
+              onValueChange={(e: string) => {
                 setTheme(e);
               }}
             >
@@ -181,12 +193,7 @@ function EditBudgetModal() {
               </SelectContent>
             </Select>
           </div>
-          <Button
-            variant={"primary"}
-            className="w-full"
-            type="submit"
-            disabled={isPending}
-          >
+          <Button className="w-full" type="submit" disabled={loading}>
             Edit Budget
           </Button>
         </form>

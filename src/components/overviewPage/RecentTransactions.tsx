@@ -1,17 +1,17 @@
-import { Transaction } from "../../../utils/types";
+import { Transaction, TransactionUser } from "@/generated/prisma";
 import RecentTransaction from "./RecentTransaction";
 
 function RecentTransactions({
   recentTransactions,
 }: {
-  recentTransactions: Transaction[] | undefined;
+  recentTransactions: (Transaction & { transactionUser: TransactionUser })[];
 }) {
   return (
     <ul className="flex flex-col gap-10">
       {recentTransactions?.map((transaction) => (
         <RecentTransaction
           transaction={transaction}
-          key={transaction._id}
+          key={transaction.id}
         ></RecentTransaction>
       ))}
     </ul>

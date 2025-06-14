@@ -1,9 +1,14 @@
 import { atom, useAtom } from "jotai";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { ClientBudget } from "../../../../utils/types";
 
-const modalState = atom<{ open: boolean; id: Id<"budgets"> | null }>({
+const modalState = atom<{
+  open: boolean;
+  budget: ClientBudget | undefined;
+  budgets: ClientBudget[];
+}>({
   open: false,
-  id: null,
+  budget: undefined,
+  budgets: [],
 });
 
 export const useEditBudgetModal = () => {

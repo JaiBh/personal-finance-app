@@ -1,33 +1,37 @@
-import { Dispatch, SetStateAction } from "react";
-import { DebouncedState } from "use-debounce";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Input } from "../ui/input";
+
+import { Button } from "../ui/button";
+import { Search } from "lucide-react";
+
 interface FormSearchInputProps {
-  state: string;
-  setState: Dispatch<SetStateAction<string>>;
-  handleSearch: DebouncedState<
-    ({ value, input }: { value: string; input: string }) => void
-  >;
+  onSubmit: (value: string) => void;
   placeholder: string;
 }
 
-function FormSearchInput({
-  state,
-  setState,
-  handleSearch,
-  placeholder,
-}: FormSearchInputProps) {
+function FormSearchInput({ placeholder, onSubmit }: FormSearchInputProps) {
+  const [searchValue, setSearchValue] = useState("");
   return (
-    <Input
-      type="text"
-      placeholder={placeholder}
-      name="search"
-      value={state}
-      className="max-w-[320px]"
-      onChange={(e) => {
-        setState(e.target.value);
-        handleSearch({ value: e.target.value, input: "search" });
+    <form
+      className="flex h-full w-full max-w-[420px] gap-2"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(searchValue);
       }}
-    ></Input>
+    >
+      <Input
+        type="text"
+        placeholder={placeholder}
+        className="h-full bg-card"
+        value={searchValue}
+        onChange={(e) => {
+          setSearchValue(e.target.value);
+        }}
+      ></Input>
+      <Button size={"sm"}>
+        <Search className="size-4"></Search>
+      </Button>
+    </form>
   );
 }
 export default FormSearchInput;

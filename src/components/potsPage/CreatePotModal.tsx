@@ -16,24 +16,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Theme } from "../../../utils/types";
 import { themeOptions } from "../../../utils/utils";
-import { toast } from "sonner";
+import axios from "axios";
 import { useCreatePotModal } from "@/features/pots/store/useCreatePotModal";
-import { useCreatePot } from "@/features/pots/api/useCreatePot";
-import { useGetPots } from "@/features/pots/api/useGetPots";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 function CreatePotModal() {
   const [modal, setModal] = useCreatePotModal();
-  const usedThemes: Theme[] = [];
-  const pots = useGetPots().data || [];
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const usedThemes: string[] = [];
+  const { pots } = modal;
 
   for (const { theme } of pots) {
     usedThemes.push(theme);
   }
 
   // Order categories and themes, displaying the used ones last
-  const sortedThemeOptions: Theme[] = [
+  const sortedThemeOptions: string[] = [
     ...themeOptions.filter((option) => !usedThemes.includes(option)),
     ...usedThemes,
   ];
@@ -41,33 +43,39 @@ function CreatePotModal() {
   // Get the first un-used category and theme
   const [name, setName] = useState<string>("");
   const maxNameLength = 30;
-  const [theme, setTheme] = useState<Theme>(sortedThemeOptions[0]);
+  const [theme, setTheme] = useState<string>(sortedThemeOptions[0]);
   const [target, setTarget] = useState<number>(0);
 
-  const { mutate, isPending } = useCreatePot();
-
   const handleClose = () => {
-    setModal({ open: false, isForced: false, altText: "" });
+    setModal({ open: false, isForced: false, altText: "", pots: [] });
     setName("");
     setTheme(sortedThemeOptions[0]);
     setTarget(0);
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate(
-      { target: target * 100, name, theme, amount: 0 },
-      {
-        onSuccess: () => {
-          toast.success("Pot Created!");
-          handleClose();
-        },
-        onError: (error) => {
-          toast.error("Oops, something went wrong. Unable to create pot");
-          handleClose();
-        },
-        onSettled: () => {},
-      }
-    );
+    if (usedThemes.includes(theme)) {
+      // extra theme check
+      toast.error("This theme is already in use");
+      return;
+    }
+    try {
+      setIsLoading(true);
+      await axios.post("/api/pots", {
+        targetAmount: target * 100,
+        name,
+        theme,
+        amount: 0,
+      });
+      handleClose();
+      toast.success("Pot Created!");
+      router.refresh();
+    } catch (err) {
+      console.log("Error creating pot", err);
+      toast.error("Something went wrong...");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -111,7 +119,11 @@ function CreatePotModal() {
               />
             </div>
             <span
-              className={`text-present-5 text-grey-500 text-end block ${maxNameLength - name.length === 0 ? "text-secondary-red" : maxNameLength - name.length < 6 && "text-other-orange"}`}
+              className={`text-present-5 text-grey-500 text-end block ${
+                maxNameLength - name.length === 0
+                  ? "text-secondary-red"
+                  : maxNameLength - name.length < 6 && "text-other-orange"
+              }`}
             >
               {maxNameLength - name.length} characters left
             </span>
@@ -138,7 +150,7 @@ function CreatePotModal() {
             <Select
               name="theme"
               value={theme}
-              onValueChange={(e: Theme) => {
+              onValueChange={(e: string) => {
                 setTheme(e);
               }}
             >
@@ -165,13 +177,8 @@ function CreatePotModal() {
               </SelectContent>
             </Select>
           </div>
-          <Button
-            variant={"primary"}
-            className="w-full"
-            type="submit"
-            disabled={isPending}
-          >
-            Add Pot
+          <Button className="w-full" type="submit" disabled={isLoading}>
+            {isLoading ? "Loading..." : "Add Pot"}
           </Button>
         </form>
       </DialogContent>

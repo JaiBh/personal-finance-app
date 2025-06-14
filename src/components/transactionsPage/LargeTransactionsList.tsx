@@ -1,3 +1,4 @@
+import { Transaction, TransactionUser } from "@/generated/prisma";
 import {
   Table,
   TableBody,
@@ -5,11 +6,10 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Transaction } from "../../../utils/types";
 import LargeListRow from "./LargeListRow";
 
 interface LargeTransactionsListProps {
-  transactions: Transaction[];
+  transactions: (Transaction & { transactionUser: TransactionUser })[];
 }
 
 function LargeTransactionsList({ transactions }: LargeTransactionsListProps) {
@@ -29,7 +29,7 @@ function LargeTransactionsList({ transactions }: LargeTransactionsListProps) {
         {transactions.map((transaction) => {
           return (
             <LargeListRow
-              key={transaction._id}
+              key={transaction.id}
               transaction={transaction}
             ></LargeListRow>
           );

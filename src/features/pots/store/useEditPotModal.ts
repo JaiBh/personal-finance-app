@@ -1,9 +1,16 @@
+import { Pot } from "@/generated/prisma";
 import { atom, useAtom } from "jotai";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { ClientPot } from "../../../../utils/types";
 
-const modalState = atom<{ open: boolean; id: Id<"pots"> | null }>({
+const modalState = atom<{
+  open: boolean;
+
+  pots: ClientPot[];
+  pot: ClientPot | undefined;
+}>({
   open: false,
-  id: null,
+  pots: [],
+  pot: undefined,
 });
 
 export const useEditPotModal = () => {

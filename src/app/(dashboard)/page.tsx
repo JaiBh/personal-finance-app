@@ -1,23 +1,37 @@
-"use client";
-
-import FirstTimeLogin from "@/features/fistTimeLogin/components/FirstTimeLogin";
 import OverviewCards from "@/components/overviewPage/OverviewCards";
 import SummaryCards from "@/components/overviewPage/SummaryCards";
-import { useGetTransactionUserByUserId } from "@/features/transactionUsers/api/useGetTransactionUserByUserId";
-import FullScreenLoading from "@/components/FullScreenLoading";
+import RedirectAuth from "@/components/RedirectAuth";
+import { prismadb } from "@/lib/prismadb";
+import { currentUser } from "@clerk/nextjs/server";
 
-function page() {
-  const { data, isLoading } = useGetTransactionUserByUserId();
-  if (isLoading) return <FullScreenLoading></FullScreenLoading>;
-  if (!data) {
-    return <FirstTimeLogin></FirstTimeLogin>;
+async function page() {
+  const user = await currentUser();
+
+  if (!user) {
+    return <RedirectAuth></RedirectAuth>;
   }
+
+  const rawTransactionUser = await prismadb.transactionUser.findFirst({
+    where: {
+      userId: user.id,
+    },
+  });
+
+  if (!rawTransactionUser) {
+    throw new Error("Unable to retrieve user information");
+  }
+
+  const transactionUser = {
+    ...rawTransactionUser,
+    balance: Number(rawTransactionUser?.balance),
+  };
+
   return (
     <div className="pb-6 grid gap-8 2xl:grid-rows-[auto,_auto,_1fr] min-h-screen">
       <section className="section-center">
         <h1 className="text-present-1 mt-6">Overview</h1>
       </section>
-      <SummaryCards></SummaryCards>
+      <SummaryCards transactionUser={transactionUser}></SummaryCards>
       <OverviewCards></OverviewCards>
     </div>
   );

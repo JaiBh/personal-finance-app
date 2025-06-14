@@ -1,18 +1,12 @@
-"use client";
+import { categorizeBill } from "@/actions/categorizeBill";
+import { prismadb } from "@/lib/prismadb";
 
-import { useGetBills } from "@/features/bills/api/useGetBills";
-import Spinner from "../Spinner";
-
-function BillsSummary() {
-  const { data: bills, isLoading } = useGetBills();
-
-  if (isLoading) {
-    return (
-      <div className="2xl:h-full">
-        <Spinner></Spinner>
-      </div>
-    );
-  }
+async function BillsSummary() {
+  const bills = await prismadb.bill.findMany({
+    where: {
+      starter: true,
+    },
+  });
 
   if (!bills || !bills.length) {
     return (
@@ -23,19 +17,15 @@ function BillsSummary() {
       </div>
     );
   }
-  const today = new Date("2024-08-20").getDate();
   const paidBills = bills.filter((bill) => {
-    return Number(bill.billDayOfMonth) <= today;
+    return categorizeBill(bill) === "paid";
   });
 
   const upcomingBills = bills.filter((bill) => {
-    return Number(bill.billDayOfMonth) > today;
+    return categorizeBill(bill) === "upcoming";
   });
   const dueSoonBills = bills.filter((bill) => {
-    return (
-      Number(bill.billDayOfMonth) > today &&
-      Number(bill.billDayOfMonth) - today <= 5
-    );
+    return categorizeBill(bill) === "due soon";
   });
 
   return (
@@ -45,7 +35,8 @@ function BillsSummary() {
         <h4 className="text-present-4-bold">
           $
           {(
-            paidBills?.reduce((acc, curr) => acc + curr.amount, 0) / 100 || 0
+            paidBills?.reduce((acc, curr) => acc + Number(curr.amount), 0) /
+              100 || 0
           ).toFixed(2)}
         </h4>
       </li>
@@ -56,8 +47,8 @@ function BillsSummary() {
         <h4 className="text-present-4-bold">
           $
           {(
-            upcomingBills?.reduce((acc, curr) => acc + curr.amount, 0) / 100 ||
-            0
+            upcomingBills?.reduce((acc, curr) => acc + Number(curr.amount), 0) /
+              100 || 0
           ).toFixed(2)}
         </h4>
       </li>
@@ -66,7 +57,8 @@ function BillsSummary() {
         <h4 className="text-present-4-bold">
           $
           {(
-            dueSoonBills?.reduce((acc, curr) => acc + curr.amount, 0) / 100 || 0
+            dueSoonBills?.reduce((acc, curr) => acc + Number(curr.amount), 0) /
+              100 || 0
           ).toFixed(2)}
         </h4>
       </li>

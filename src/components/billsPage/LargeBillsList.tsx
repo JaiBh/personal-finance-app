@@ -7,14 +7,15 @@ import {
   TableRow,
 } from "../ui/table";
 import Image from "next/image";
-import avatar from "@/assets/sebastian-cook.svg";
-import { Bill } from "../../../utils/types";
 import { FaCheckCircle } from "react-icons/fa";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { formatDayWithOrdinal } from "../../../utils/utils";
+import { Bill, TransactionUser } from "@/generated/prisma";
+import { categorizeBill } from "@/actions/categorizeBill";
+import { cn } from "@/lib/utils";
 
 interface LargeBillsListProps {
-  bills: Bill[];
+  bills: (Bill & { transactionUser: TransactionUser })[];
 }
 
 function LargeBillsList({ bills }: LargeBillsListProps) {
@@ -29,18 +30,14 @@ function LargeBillsList({ bills }: LargeBillsListProps) {
       </TableHeader>
       <TableBody>
         {bills.map((bill) => {
-          const { _id, name, amount, billDayOfMonth } = bill;
-          const dollars = `$${(amount / 100).toFixed(2)}`;
-          const today = new Date("2024-08-20").getDate();
-          const paid = Number(billDayOfMonth) <= today;
-          const dueSoon =
-            Number(billDayOfMonth) - today <= 5 &&
-            Number(billDayOfMonth) > today;
+          const { id, name, amount, billDayOfMonth } = bill;
+          const dollars = `$${(Number(amount) / 100).toFixed(2)}`;
+          const billStatus = categorizeBill(bill);
           return (
-            <TableRow className="border-none" key={_id}>
+            <TableRow className="border-none" key={id}>
               <TableCell className="flex items-center gap-4">
                 <Image
-                  src={avatar}
+                  src={bill.transactionUser.imageUrl}
                   alt="user avatar"
                   priority
                   height={32}
@@ -51,19 +48,24 @@ function LargeBillsList({ bills }: LargeBillsListProps) {
               </TableCell>
               <TableCell className="text-present-5">
                 <div className="flex gap-2 items-center">
-                  <span className="text-secondary-green capitalize">
-                    monthly-{formatDayWithOrdinal(billDayOfMonth)}
+                  <span
+                    className={cn(
+                      "capitalize",
+                      billStatus === "paid" && "text-secondary-green"
+                    )}
+                  >
+                    monthly-{formatDayWithOrdinal(Number(billDayOfMonth))}
                   </span>
-                  {paid ? (
+                  {billStatus === "paid" ? (
                     <FaCheckCircle className="size-4 text-secondary-green" />
-                  ) : dueSoon ? (
+                  ) : billStatus === "due soon" ? (
                     <RiErrorWarningFill className="size-4 text-secondary-red"></RiErrorWarningFill>
                   ) : (
                     ""
                   )}
                 </div>
               </TableCell>
-              {dueSoon ? (
+              {billStatus === "due soon" ? (
                 <TableCell>
                   <span className="text-present-4-bold text-secondary-red">
                     {dollars}

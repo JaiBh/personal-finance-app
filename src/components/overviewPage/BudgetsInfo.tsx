@@ -1,4 +1,4 @@
-import { Budget } from "../../../utils/types";
+import { Budget } from "@/generated/prisma";
 
 function BudgetsInfo({ topBudgets }: { topBudgets: Budget[] }) {
   return (
@@ -6,7 +6,7 @@ function BudgetsInfo({ topBudgets }: { topBudgets: Budget[] }) {
       {topBudgets?.map((budget) => {
         return (
           <li
-            key={budget._id}
+            key={budget.id}
             className="pl-4 "
             style={{ borderLeft: `4px solid hsl(var(--clr-${budget.theme}))` }}
           >
@@ -14,7 +14,7 @@ function BudgetsInfo({ topBudgets }: { topBudgets: Budget[] }) {
               {budget.category.replace("-", " ")}
             </span>
             <h4 className="text-present-4-bold mt-[3px]">
-              ${(budget.maxSpend / 100).toFixed(2)}
+              ${(Number(budget.maxSpend) / 100).toFixed(2)}
             </h4>
           </li>
         );

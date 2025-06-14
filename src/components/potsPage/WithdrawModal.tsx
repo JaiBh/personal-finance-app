@@ -9,33 +9,21 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
-import { useGetPots } from "@/features/pots/api/useGetPots";
 import { toast } from "sonner";
 import { useConfirm } from "@/hooks/useConfirm";
 import { useWithdrawModal } from "@/features/pots/store/useWithdrawModal";
-import { usePotTransfer } from "@/features/pots/api/usePotTransfer";
-import { useGetUserInfo } from "@/features/userInfo/api/useGetUserInfo";
-import { useCreateTransaction } from "@/features/transactions/api/useCreateTransaction";
-import { TransactionUser } from "../../../utils/types";
-import { useGetTransactionUsers } from "@/features/transactionUsers/api/useGetTransactionUsers";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 function WithdrawModal() {
   const [modal, setModal] = useWithdrawModal();
-  const { mutate: transactionMutate } = useCreateTransaction();
-  const { mutate, isPending } = usePotTransfer();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure?",
     "Are you sure you want to withdraw money from this pot?"
   );
-  const pots = useGetPots().data || [];
-  const { data: userInfo } = useGetUserInfo();
-  const { data: transactionUsers } = useGetTransactionUsers();
-  let transactionUser: TransactionUser | undefined;
-  if (userInfo) {
-    transactionUser = transactionUsers?.filter(
-      (user) => userInfo.transactionUserId === user._id
-    )[0];
-  }
+  const { pot, transactionUser } = modal;
 
   // Get the first un-used category and theme
   const [originalAmount, setOriginalAmount] = useState<number>(0);
@@ -45,21 +33,17 @@ function WithdrawModal() {
   const [target, setTarget] = useState<number>(0);
 
   useEffect(() => {
-    const pot = pots.filter((pot) => {
-      if (pot._id === modal.id) {
-        return pot;
-      }
-    })[0];
     if (pot) {
       setOriginalAmount(pot.amount / 100);
       setNewAmount(pot.amount / 100);
       setName(pot.name);
       setTarget(pot.targetAmount / 100);
+      setLoading(false);
     }
-  }, [setOriginalAmount, setName, setNewAmount, setTarget, pots, modal.open]);
+  }, [pot]);
 
   const handleClose = () => {
-    setModal({ open: false, id: null });
+    setModal({ open: false, pot: undefined, transactionUser: undefined });
     setOriginalAmount(0);
     setName("");
     setNewAmount(0);
@@ -68,7 +52,7 @@ function WithdrawModal() {
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!modal.id || !transactionUser) {
+    if (!pot || !transactionUser?.balance) {
       return;
     }
 
@@ -76,40 +60,66 @@ function WithdrawModal() {
 
     if (!ok) return;
 
-    mutate(
-      // @ts-ignore
-      {
-        change: subtract * 100,
-        id: modal.id,
-        addOrWithdraw: "withdraw",
-        newAmount: newAmount * 100,
-      },
-      {
-        onSuccess: () => {
-          toast.success(`Funds withdrawn from ${name}!`);
-          handleClose();
-          transactionMutate({
-            senderOrRecipient: "recipient",
-            transactionUserId: transactionUser._id,
-            amount: subtract * 100,
-            category: "general",
-            name: transactionUser.name,
-            transactionDate: `2024-08-20`,
-            recurringBill: false,
-          });
-        },
-        onError: (error) => {
-          toast.error(
-            `Oops, something went wrong. Unable to withdraw funds from ${name}`
-          );
-          handleClose();
-        },
-        onSettled: () => {},
-      }
-    );
-  };
+    try {
+      setLoading(true);
+      // add to pot
+      await axios.patch(`/api/pots/${pot.id}`, {
+        amount: newAmount * 100,
+        name: pot.name,
+        targetAmount: pot.targetAmount,
+        theme: pot.theme,
+      });
 
-  if (!userInfo || !transactionUser) return;
+      // change balance
+      try {
+        await axios.patch(`/api/transactionUsers/${transactionUser.id}`, {
+          balance: (transactionUser.balance / 100 + subtract) * 100,
+        });
+
+        // create transaction
+        try {
+          await axios.post("/api/transactions", {
+            amount: subtract * 100,
+            recipient: true,
+          });
+          toast.success("Funds withdrawn from pot!");
+          handleClose();
+          router.refresh();
+        } catch (err) {
+          toast.error("Something went wrong...");
+          console.log("Error creating new transaction", err);
+
+          // reverse pot patch
+          await axios.patch(`/api/pots/${pot.id}`, {
+            amount: pot.amount,
+            theme: pot.theme,
+            name,
+            targetAmount: pot.targetAmount,
+          });
+
+          // reverse balance patch
+          await axios.patch(`/api/transactionUsers/${transactionUser.id}`, {
+            balance: transactionUser.balance,
+          });
+        }
+      } catch (err) {
+        toast.error("Something went wrong...");
+        console.log("Error patching transaction user balance", err);
+        // reverse pot patch
+        await axios.patch(`/api/pots/${pot.id}`, {
+          amount: pot.amount,
+          theme: pot.theme,
+          name,
+          targetAmount: pot.targetAmount,
+        });
+      }
+    } catch (err) {
+      console.log("Error adding money to pot", err);
+      toast.error("Something went wrong...");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -143,7 +153,9 @@ function WithdrawModal() {
                   <div
                     className="rounded-r h-full bg-secondary-red"
                     style={{
-                      width: `${((subtract / originalAmount) * 100).toFixed(2)}%`,
+                      width: `${((subtract / originalAmount) * 100).toFixed(
+                        2
+                      )}%`,
                     }}
                   ></div>
                 </div>
@@ -185,12 +197,7 @@ function WithdrawModal() {
                 }}
               />
             </div>
-            <Button
-              variant={"primary"}
-              className="w-full mt-4"
-              type="submit"
-              disabled={isPending}
-            >
+            <Button className="w-full mt-4" type="submit" disabled={loading}>
               Confirm Withdrawal
             </Button>
           </form>

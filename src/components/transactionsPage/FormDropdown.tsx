@@ -1,5 +1,4 @@
 import { DebouncedState } from "use-debounce";
-import { Dispatch, SetStateAction } from "react";
 import { IconType } from "react-icons";
 import {
   DropdownMenu,
@@ -8,40 +7,38 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-
+import { Check } from "lucide-react";
 interface FormDropdownProps {
   options: { text: string; value: string }[];
-  state: string;
-  setState: Dispatch<SetStateAction<string>>;
-  input: "sortBy" | "category";
-  handleSearch: DebouncedState<
-    ({ value, input }: { value: string; input: string }) => void
-  >;
+  selected: string;
+  setFilters: (value: string) => void;
   Icon: IconType;
 }
 
 function FormDropdown(props: FormDropdownProps) {
-  const { options, state, setState, input, handleSearch, Icon } = props;
+  const { options, selected, setFilters, Icon } = props;
   return (
-    <div className="md:hidden">
+    <div>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Icon size={20}></Icon>
+          <Icon size={24}></Icon>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="bottom" align="end" className="md:hidden">
           {options.map(({ value, text }, index) => {
             return (
               <DropdownMenuItem
                 key={index}
-                className={cn(
-                  `${value === state && "font-bold"} justify-center`
-                )}
                 onClick={() => {
-                  setState(value);
-                  handleSearch({ value, input });
+                  setFilters(value);
                 }}
+                className={cn(
+                  `${value === selected && "font-bold"} capitalize`
+                )}
               >
-                {text}
+                <div className="flex items-center gap-2">
+                  <span>{text}</span>
+                  {value === selected && <Check></Check>}
+                </div>
               </DropdownMenuItem>
             );
           })}

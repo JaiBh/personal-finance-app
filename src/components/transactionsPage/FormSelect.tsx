@@ -1,4 +1,4 @@
-import { DebouncedState } from "use-debounce";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -6,39 +6,43 @@ import {
   SelectItem,
   SelectValue,
 } from "../ui/select";
-import { Dispatch, SetStateAction } from "react";
 import { cn } from "@/lib/utils";
+import LoadingSpinner from "../LoadingSpinner";
 
 interface FormSelectsProps {
+  selected: string;
   options: { text: string; value: string }[];
-  state: string;
-  setState: Dispatch<SetStateAction<string>>;
-  input: "sortBy" | "category";
-  handleSearch: DebouncedState<
-    ({ value, input }: { value: string; input: string }) => void
-  >;
   label: string;
   triggerWidth: number;
+  setFilters: (value: string) => void;
+  flex?: boolean;
 }
 
 function FormSelect(props: FormSelectsProps) {
-  const { options, state, setState, input, handleSearch, label, triggerWidth } =
-    props;
+  const { options, label, triggerWidth, setFilters, selected, flex } = props;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
-    <div className="max-md:hidden flex gap-2 items-center">
-      <h4 className=" text-present-4 text-grey-500 text-nowrap">{label}</h4>
+    <div className={cn(flex ? "flex items-center gap-2" : "space-y-2")}>
+      <h4 className=" text-present-4 text-grey-500 text-center">{label}</h4>
       <Select
-        name={input}
-        value={state}
+        value={selected}
         onValueChange={(e) => {
-          setState(e);
-          handleSearch({ value: e, input });
+          setFilters(e);
         }}
       >
         <SelectTrigger
           className={cn(`w-[${triggerWidth}px] text-present-4 capitalize`)}
         >
-          <SelectValue></SelectValue>
+          {mounted ? (
+            <SelectValue></SelectValue>
+          ) : (
+            <LoadingSpinner className="w-6 h-6"></LoadingSpinner>
+          )}
         </SelectTrigger>
         <SelectContent>
           {options.map(({ value, text }, index) => {

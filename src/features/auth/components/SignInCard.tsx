@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { SignInFlow } from "../types";
 import { useState } from "react";
-import { useAuthActions } from "@convex-dev/auth/react";
 import { TriangleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useSignIn } from "@clerk/nextjs";
 
 interface SignInCardProps {
   setState: (state: SignInFlow) => void;
@@ -16,29 +16,42 @@ interface SignInCardProps {
 
 const SignInCard = ({ setState }: SignInCardProps) => {
   const router = useRouter();
-  const { signIn } = useAuthActions();
+  const { signIn, setActive, isLoaded } = useSignIn();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
 
-  const onPasswordSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+  const onPasswordSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setPending(true);
-    signIn("password", { email, password, flow: "signIn" })
-      .catch(() => {
-        setError("Invalid email or password");
-      })
-      .finally(() => {
-        setPending(false);
-        router.refresh();
+    if (!isLoaded) return;
+
+    try {
+      setPending(true);
+      const result = await signIn.create({
+        identifier: email,
+        password,
       });
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+        router.refresh();
+      } else {
+        console.log("Unexpected sign-in status:", result);
+      }
+    } catch (err: any) {
+      setError("Invalid email or password");
+    } finally {
+      setPending(false);
+    }
   };
 
-  const onProviderSignIn = (value: "github" | "google") => {
-    setPending(true);
-    signIn(value).finally(() => {
-      setPending(false);
+  const onProviderSignIn = (provider: "github" | "google" | "slack") => {
+    if (!isLoaded) return;
+
+    signIn?.authenticateWithRedirect({
+      strategy: `oauth_${provider}`,
+      redirectUrl: "/",
+      redirectUrlComplete: "/",
     });
   };
   return (
@@ -104,6 +117,16 @@ const SignInCard = ({ setState }: SignInCardProps) => {
           >
             <FaGithub className="size-5 absolute left-2.5 top-3"></FaGithub>
             Continue with Github
+          </Button>
+          <Button
+            disabled={pending}
+            onClick={() => onProviderSignIn("slack")}
+            variant={"outline"}
+            size={"lg"}
+            className="w-full relative bg-white border-grey-900"
+          >
+            <FaGithub className="size-5 absolute left-2.5 top-3"></FaGithub>
+            Continue with Slack
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">

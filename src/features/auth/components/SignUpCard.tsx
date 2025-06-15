@@ -4,20 +4,15 @@ import { FaGithub } from "react-icons/fa";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { SignInFlow } from "../types";
 import { useState } from "react";
 import { TriangleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useSignIn, useSignUp } from "@clerk/nextjs";
+import { useSignUp } from "@clerk/nextjs";
+import RouteLink from "@/components/RouteLink";
 
-interface SignUpProps {
-  setState: (state: SignInFlow) => void;
-}
-
-const SignUpCard = ({ setState }: SignUpProps) => {
+const SignUpCard = () => {
   const router = useRouter();
   const { signUp, setActive, isLoaded } = useSignUp();
-  const { signIn, isLoaded: signInIsLoaded } = useSignIn();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,25 +49,13 @@ const SignUpCard = ({ setState }: SignUpProps) => {
       setPending(false);
     }
   };
-  const onProviderSignIn = async (provider: "github" | "google") => {
-    if (!signInIsLoaded) return;
-    setPending(true);
-    setError("");
-
-    try {
-      await signIn.authenticateWithRedirect({
-        strategy: `oauth_${provider}`,
-        redirectUrl: "/",
-        redirectUrlComplete: "/",
-      });
-    } catch (err: any) {
-      console.error("OAuth Error:", err);
-      setError(
-        err?.errors?.[0]?.message || "Something went wrong with social login."
-      );
-    } finally {
-      setPending(false);
-    }
+  const onProviderSignup = (provider: "github" | "google") => {
+    if (!isLoaded) return;
+    signUp.authenticateWithRedirect({
+      strategy: `oauth_${provider}`,
+      redirectUrl: "/",
+      redirectUrlComplete: "/",
+    });
   };
   return (
     <Card className="w-full h-full p-8">
@@ -139,7 +122,7 @@ const SignUpCard = ({ setState }: SignUpProps) => {
         <div className="flex flex-col gap-y-2.5">
           <Button
             disabled={pending}
-            onClick={() => onProviderSignIn("google")}
+            onClick={() => onProviderSignup("google")}
             variant={"outline"}
             size={"lg"}
             className="w-full relative"
@@ -149,7 +132,7 @@ const SignUpCard = ({ setState }: SignUpProps) => {
           </Button>
           <Button
             disabled={pending}
-            onClick={() => onProviderSignIn("github")}
+            onClick={() => onProviderSignup("github")}
             variant={"outline"}
             size={"lg"}
             className="w-full relative"
@@ -160,12 +143,11 @@ const SignUpCard = ({ setState }: SignUpProps) => {
         </div>
         <p className="text-xs text-muted-foreground">
           Already have an account?{" "}
-          <span
-            onClick={() => setState("signIn")}
-            className="text-sky-700 hover:underline cursor-pointer"
-          >
-            Sign in
-          </span>
+          <RouteLink href="/signIn">
+            <span className="text-sky-700 hover:underline cursor-pointer">
+              Sign in
+            </span>
+          </RouteLink>
         </p>
       </CardContent>
     </Card>

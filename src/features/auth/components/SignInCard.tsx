@@ -4,17 +4,13 @@ import { FaGithub } from "react-icons/fa";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { SignInFlow } from "../types";
 import { useState } from "react";
 import { TriangleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSignIn } from "@clerk/nextjs";
+import RouteLink from "@/components/RouteLink";
 
-interface SignInCardProps {
-  setState: (state: SignInFlow) => void;
-}
-
-const SignInCard = ({ setState }: SignInCardProps) => {
+const SignInCard = () => {
   const router = useRouter();
   const { signIn, setActive, isLoaded } = useSignIn();
   const [email, setEmail] = useState("");
@@ -132,12 +128,11 @@ const SignInCard = ({ setState }: SignInCardProps) => {
         </div>
         <p className="text-xs text-muted-foreground">
           Don't have an account?{" "}
-          <span
-            onClick={() => setState("signUp")}
-            className="text-sky-700 hover:underline cursor-pointer"
-          >
-            Sign up
-          </span>
+          <RouteLink href="/signUp">
+            <span className="text-sky-700 hover:underline cursor-pointer">
+              Sign up
+            </span>
+          </RouteLink>
         </p>
       </CardContent>
     </Card>

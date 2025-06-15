@@ -6,7 +6,7 @@ import { useEffect } from "react";
 function RedirectAuth() {
   const router = useRouter();
   useEffect(() => {
-    router.push("/auth");
+    router.push("/signIn");
   }, []);
   return null;
 }

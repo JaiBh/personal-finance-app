@@ -80,9 +80,9 @@ function SummaryCards({ transactionUser }: SummaryCardsProps) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <h1 className="text-present-1">{`$${(
-              (transactionUser.balance || 0) / 100
-            ).toFixed(2)}`}</h1>
+            <h1 className="text-present-1">{`$${Number(
+              ((transactionUser.balance || 0) / 100).toFixed(2)
+            ).toLocaleString()}`}</h1>
           </CardContent>
         </Card>
         <Card className={`rounded-xl flex flex-col justify-between`}>

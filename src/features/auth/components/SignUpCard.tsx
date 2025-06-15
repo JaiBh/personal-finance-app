@@ -53,7 +53,7 @@ const SignUpCard = ({ setState }: SignUpProps) => {
       setPending(false);
     }
   };
-  const onProviderSignup = (provider: "github" | "google" | "slack") => {
+  const onProviderSignup = (provider: "github" | "google") => {
     if (!isLoaded) return;
     signUp.authenticateWithRedirect({
       strategy: `oauth_${provider}`,
@@ -143,16 +143,6 @@ const SignUpCard = ({ setState }: SignUpProps) => {
           >
             <FaGithub className="size-5 absolute left-2.5 top-3"></FaGithub>
             Sign up with Github
-          </Button>
-          <Button
-            disabled={pending}
-            onClick={() => onProviderSignup("slack")}
-            variant={"outline"}
-            size={"lg"}
-            className="w-full relative"
-          >
-            <FaGithub className="size-5 absolute left-2.5 top-3"></FaGithub>
-            Sign up with Slack
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">

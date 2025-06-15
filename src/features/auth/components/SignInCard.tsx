@@ -45,7 +45,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
     }
   };
 
-  const onProviderSignIn = (provider: "github" | "google" | "slack") => {
+  const onProviderSignIn = (provider: "github" | "google") => {
     if (!isLoaded) return;
 
     signIn?.authenticateWithRedirect({
@@ -117,16 +117,6 @@ const SignInCard = ({ setState }: SignInCardProps) => {
           >
             <FaGithub className="size-5 absolute left-2.5 top-3"></FaGithub>
             Continue with Github
-          </Button>
-          <Button
-            disabled={pending}
-            onClick={() => onProviderSignIn("slack")}
-            variant={"outline"}
-            size={"lg"}
-            className="w-full relative bg-white border-grey-900"
-          >
-            <FaGithub className="size-5 absolute left-2.5 top-3"></FaGithub>
-            Continue with Slack
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">

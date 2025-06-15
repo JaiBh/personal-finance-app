@@ -2,6 +2,7 @@ import { prismadb } from "@/lib/prismadb";
 import { currentUser } from "@clerk/nextjs/server";
 import RedirectAuth from "./RedirectAuth";
 import React from "react";
+import ClientRedirect from "./ClientRedirect";
 
 async function FirstTimeLoginInit({ children }: { children: React.ReactNode }) {
   const user = await currentUser();
@@ -63,7 +64,13 @@ async function FirstTimeLoginInit({ children }: { children: React.ReactNode }) {
       });
     });
   }
-  if (!transactionUser) return null;
+  if (!transactionUser)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <p className="text-muted-foreground mb-4">Setting up your account...</p>
+        <ClientRedirect to="/" delay={1000} />{" "}
+      </div>
+    );
   return <>{children}</>;
 }
 export default FirstTimeLoginInit;

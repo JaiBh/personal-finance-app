@@ -8,7 +8,7 @@ import { SignInFlow } from "../types";
 import { useState } from "react";
 import { TriangleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useSignUp } from "@clerk/nextjs";
+import { useSignIn, useSignUp } from "@clerk/nextjs";
 
 interface SignUpProps {
   setState: (state: SignInFlow) => void;
@@ -17,6 +17,7 @@ interface SignUpProps {
 const SignUpCard = ({ setState }: SignUpProps) => {
   const router = useRouter();
   const { signUp, setActive, isLoaded } = useSignUp();
+  const { signIn, isLoaded: signInIsLoaded } = useSignIn();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,9 +54,10 @@ const SignUpCard = ({ setState }: SignUpProps) => {
       setPending(false);
     }
   };
-  const onProviderSignup = (provider: "github" | "google") => {
-    if (!isLoaded) return;
-    signUp.authenticateWithRedirect({
+  const onProviderSignIn = async (provider: "github" | "google") => {
+    if (!signInIsLoaded) return;
+
+    await signIn?.authenticateWithRedirect({
       strategy: `oauth_${provider}`,
       redirectUrl: "/",
       redirectUrlComplete: "/",
@@ -126,7 +128,7 @@ const SignUpCard = ({ setState }: SignUpProps) => {
         <div className="flex flex-col gap-y-2.5">
           <Button
             disabled={pending}
-            onClick={() => onProviderSignup("google")}
+            onClick={() => onProviderSignIn("google")}
             variant={"outline"}
             size={"lg"}
             className="w-full relative"
@@ -136,7 +138,7 @@ const SignUpCard = ({ setState }: SignUpProps) => {
           </Button>
           <Button
             disabled={pending}
-            onClick={() => onProviderSignup("github")}
+            onClick={() => onProviderSignIn("github")}
             variant={"outline"}
             size={"lg"}
             className="w-full relative"

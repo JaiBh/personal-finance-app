@@ -45,10 +45,10 @@ const SignInCard = ({ setState }: SignInCardProps) => {
     }
   };
 
-  const onProviderSignIn = (provider: "github" | "google") => {
+  const onProviderSignIn = async (provider: "github" | "google") => {
     if (!isLoaded) return;
 
-    signIn?.authenticateWithRedirect({
+    await signIn?.authenticateWithRedirect({
       strategy: `oauth_${provider}`,
       redirectUrl: "/",
       redirectUrlComplete: "/",

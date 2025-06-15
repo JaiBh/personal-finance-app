@@ -47,12 +47,23 @@ const SignInCard = ({ setState }: SignInCardProps) => {
 
   const onProviderSignIn = async (provider: "github" | "google") => {
     if (!isLoaded) return;
+    setPending(true);
+    setError("");
 
-    await signIn?.authenticateWithRedirect({
-      strategy: `oauth_${provider}`,
-      redirectUrl: "/",
-      redirectUrlComplete: "/",
-    });
+    try {
+      await signIn.authenticateWithRedirect({
+        strategy: `oauth_${provider}`,
+        redirectUrl: "/",
+        redirectUrlComplete: "/",
+      });
+    } catch (err: any) {
+      console.error("OAuth Error:", err);
+      setError(
+        err?.errors?.[0]?.message || "Something went wrong with social login."
+      );
+    } finally {
+      setPending(false);
+    }
   };
   return (
     <Card className="w-full h-full p-8">

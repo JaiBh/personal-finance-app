@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader } from "../ui/card";
 import { toast } from "sonner";
 import getTransactions from "@/actions/getTransactions";
 import TimeFrameDropdown from "./TimeFrameDropdown";
-import Spinner from "../Spinner";
 import LoadingSpinner from "../LoadingSpinner";
 
 interface SummaryCardsProps {

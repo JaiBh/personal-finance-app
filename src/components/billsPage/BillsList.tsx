@@ -1,7 +1,6 @@
 "use client";
 
 import NoResults from "../transactionsPage/NoResults";
-import Spinner from "../Spinner";
 import LargeBillsList from "./LargeBillsList";
 import MobileBillsList from "./MobileBillsList";
 import { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import { useBillsFiltersAtom } from "@/features/bills/store/useBillsFiltersAtom"
 import getBills from "@/actions/getBills";
 import { toast } from "sonner";
 import { Skeleton } from "../ui/skeleton";
+import LoadingSpinner from "../LoadingSpinner";
 
 function BillsList() {
   const [loading, setLoading] = useState(true);
@@ -46,7 +46,7 @@ function BillsList() {
   }, [filters]);
 
   if (loading) {
-    return <Spinner></Spinner>;
+    return <LoadingSpinner></LoadingSpinner>;
   }
 
   if (bills.length < 1) {

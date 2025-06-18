@@ -22,12 +22,12 @@ A sleek, modern personal finance app that empowers users to track income, expens
 ## 🧰 Tech Stack
 
 - **Framework**: Next.js 14 (App Router)
-- **Styling**: Tailwind CSS
+- **Styling**: Tailwind CSS, ShadCN UI
 - **Auth**: Clerk
 - **Database**: PostgreSQL via Prisma & NeonDB
 - **Deployment**: Vercel
 - **TypeScript**: Full TypeScript support throughout
-- **Design System**: ShadCN UI
+- **Design System**: Frontend Mentor Challenge
 
 ---
 

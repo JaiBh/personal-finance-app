@@ -64,9 +64,8 @@ src/
 ├── app/                # App Router pages
 ├── components/         # Reusable UI components
 ├── lib/                # Utility functions and Prisma client
-├── prisma/             # Prisma schema and DB seed logic
-├── public/             # Static assets
-└── styles/             # Tailwind config and globals
+├── features/           # Application state & logic (e.g. Jotai atoms per feature)
+prisma/             # Prisma schema and DB seed logic
 ```
 
 ---

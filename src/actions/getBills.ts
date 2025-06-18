@@ -6,7 +6,7 @@ interface Query {
   searchTerm?: string;
 }
 
-const URL = `${process.env.NEXT_PUBLIC_API_URL}/bills`;
+const URL = `/api/bills`;
 const getBills = async (
   query: Query
 ): Promise<(Bill & { transactionUser: TransactionUser })[]> => {

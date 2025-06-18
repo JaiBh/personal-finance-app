@@ -14,7 +14,7 @@ interface Query {
   cursor?: string;
 }
 
-const URL = `${process.env.NEXT_PUBLIC_API_URL}/transactions`;
+const URL = `/api/transactions`;
 const getTransactions = async (
   query: Query
 ): Promise<{

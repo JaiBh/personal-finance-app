@@ -10,7 +10,7 @@ import UserAvatar from "../UserAvatar";
 function SmallSidebar() {
   return (
     <nav className="bg-grey-900 rounded-t-lg pt-4 px-4">
-      <ul className="flex justify-between max-w-[43rem] mt-0 mx-auto items-center">
+      <ul className="flex justify-between items-center max-w-[43rem] mx-auto">
         <SmallSidebarLink
           Icon={IoMdHome}
           pageName={"Overview"}

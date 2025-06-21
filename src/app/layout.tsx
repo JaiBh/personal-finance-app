@@ -4,6 +4,7 @@ import { Public_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import LoadingClientWrapper from "@/components/LoadingClientWrapper";
 import { Provider as JotaiProvider } from "jotai";
+import { Toaster } from "sonner";
 import DemoDataRefresher from "@/components/DemoDataRefresher";
 
 const publicSans = Public_Sans({
@@ -31,6 +32,8 @@ export default function RootLayout({
       <html lang="en">
         <body className={`${publicSans.className}`}>
           <JotaiProvider>
+            <Toaster position="top-center"></Toaster>
+
             <LoadingClientWrapper>
               <DemoDataRefresher></DemoDataRefresher>
               <main>{children}</main>

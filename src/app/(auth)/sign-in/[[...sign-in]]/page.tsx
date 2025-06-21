@@ -2,6 +2,7 @@ import { SignIn } from "@clerk/nextjs";
 import Image from "next/image";
 import logo from "@/assets/logoLarge.svg";
 import illustration from "@/assets/illustrationAuthentication.svg";
+import DemoUserCard from "@/components/auth/DemoUserCard";
 
 function page() {
   return (
@@ -18,7 +19,8 @@ function page() {
         <Image src={logo} alt={logo} priority className="object-cover"></Image>
       </header>
       <div className="my-8 h-full flex items-center justify-center">
-        <div className="w-[90%] max-w-[35rem] md:h-auto">
+        <div className="space-y-6">
+          <DemoUserCard></DemoUserCard>
           <SignIn></SignIn>
         </div>
       </div>

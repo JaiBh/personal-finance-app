@@ -1,3 +1,4 @@
+import { isDemoUser } from "@/lib/auth/isDemoUser";
 import { prismadb } from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
@@ -61,7 +62,7 @@ export async function POST(req: Request) {
 
     const pots = await prismadb.pot.create({
       data: {
-        name,
+        name: isDemoUser(userId) ? "Demo Pot" : name,
         userId: userId,
         amount,
         theme,

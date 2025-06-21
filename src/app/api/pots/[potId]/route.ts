@@ -1,3 +1,4 @@
+import { isDemoUser } from "@/lib/auth/isDemoUser";
 import { prismadb } from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
@@ -42,7 +43,7 @@ export async function PATCH(
         userId,
       },
       data: {
-        name,
+        name: isDemoUser(userId) ? "Demo Pot" : name,
         theme,
         targetAmount,
         amount,

@@ -94,7 +94,7 @@ Built by [**Jai Bhullar**](https://jaibh-portfolio.vercel.app) – aspiring fron
 
 - 📫 Email: jaibhullar.developer@outlook.com
 - 🔗 **LinkedIn:** [linkedin.com/in/jai-bhullar-dev](https://www.linkedin.com/in/jai-bhullar-dev)
-- 📄 [View My CV](https://drive.google.com/file/d/1j2kYSzZ5HjxdfK2MaI9PJ9L5ZaV0qrnB/view?usp=sharing)
+- 📄 [View My CV](https://drive.google.com/file/d/1_cvbQ0_aN2NriJZgmYCE5YCcDnxHFLhg/view?usp=sharing)
 
 ---
 
